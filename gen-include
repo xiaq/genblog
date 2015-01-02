@@ -1,0 +1,19 @@
+#!/bin/sh
+
+i() {
+	echo -n '`'
+    cat ./include/$1 | sed 's/`/``/g'
+	echo -n '`'
+}
+
+cat > ./include.go <<EOF
+package main
+
+const css = `i reset.css` + `i blog.css`
+
+const baseTemplateText = `i base.html`
+
+const articleTemplateText = `i article.html`
+
+const categoryTemplateText = `i category.html`
+EOF

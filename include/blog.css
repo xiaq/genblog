@@ -1,0 +1,108 @@
+body {
+    background-color: #e5e5e5;
+    font-size: 20px;
+    font-family: Georgia, Times, Serif, FZShuSong-Z01, SimSun;
+}
+
+#page {
+    background-color: white;
+    padding: 24px 24px 20px 24px;
+    box-shadow: 2px 1px 3px #cccccc;
+}
+
+@media screen and (min-width: 768px) {
+    #page {
+        margin: 32px auto 20px auto;
+        padding: 48px 48px 40px 48px;
+        width: 672px;
+    }
+}
+
+#header {
+    font-size: 2em;
+    margin-bottom: 2rem;
+}
+
+#header > a, a.nav-link {
+    color: black;
+    text-decoration: none;
+}
+
+#category-list > li {
+    list-style: none;
+    display: inline;
+}
+
+#category-list, #article, #article-list {
+    margin-top: 1em;
+}
+
+.nav-link {
+    padding-bottom: 2px;
+    border-bottom: 2px solid #d0d0d0;
+}
+
+.nav-link.current, .nav-link.current:hover {
+    border-bottom-color: black;
+}
+
+.nav-link:hover {
+    border-bottom-color: #888888;
+}
+
+#category-list > li+li:before {
+    content: '· ';
+    color: #888888;
+}
+
+#article p {
+	line-height: 1.1;
+	margin-bottom: 0.6em;
+}
+
+/* Only use headers up to h3 */
+#article h1, #article h2, #article h3 {
+    font-family: Arial, Sans Serif, FZHei-B01, WenQuanYi Micro Hei, SimHei;
+    line-height: 1.5;
+    margin-top: 0.6em;
+    margin-bottom: 0.6em;
+    font-weight: normal;
+}
+
+#article h1 {
+    font-size: 1.4em;
+}
+
+#article h2 {
+    font-size: 1.2em;
+}
+
+#article h3 {
+    font-size: 1.1em;
+}
+
+#article-list > li {
+    list-style: square inside;
+    padding-bottom: 2px;
+    margin-bottom: 4px;
+}
+
+.article-footer {
+	clear: both;
+	float: right;
+	margin-bottom: 1.5em;
+}
+
+.article-meta {
+    float: right;
+}
+
+/* Category list after an article */
+#article-category-list > #category-list {
+	float: right;
+	margin-top: 0;
+}
+
+.clear, hr {
+    clear: both;
+}

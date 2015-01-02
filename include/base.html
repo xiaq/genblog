@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>
+        {{ .BlogTitle }} » 
+        {{ if .IsCategory }}
+            {{ index .CategoryMap .Category }}
+        {{ else }}
+            {{ .Title }}
+        {{ end }}
+    </title>
+    <style> {{ .CSS }} </style>
+</head>
+<body>
+    <div id="page">
+        <header id="header"><a href="{{ .Root }}/index.html">{{ .BlogTitle }}</a></header>
+        {{ template "content" . }}
+    </div>
+</body>
+</html>
+
+{{ define "category-list" }}
+	{{ $isCat := .IsCategory }}
+	{{ $cat := .Category }}
+	{{ $root := .Root }}
+	<ul id="category-list">
+		{{ range $info := .Categories }}
+			<li><a href="{{ $root }}/{{ $info.Name }}/index.html"
+				   class="nav-link {{ if and $isCat (eq $cat $info.Name) }}current{{ end }}">
+				{{ $info.Title }}
+			</a></li>
+		{{ end }}
+	</ul>
+{{ end }}
+
+{{ define "article-list" }}
+	<ul id="article-list">
+		{{ range $info := .Articles }}
+			<li>
+				<a href="{{ $info.Name }}.html" class="nav-link">{{ $info.Title }}</a> 
+				<span class="article-meta">{{ $info.Timestamp }}</span>
+			</li>
+		{{ end }}
+	</ul>
+{{ end }}
