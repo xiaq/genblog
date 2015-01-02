@@ -62,6 +62,7 @@ func (b *baseDot) Root() string {
 type articleMeta struct {
 	Name      string
 	Title     string
+	Category  string
 	Timestamp string
 }
 
@@ -130,6 +131,15 @@ func openForWrite(fname string) (*os.File, error) {
 	return os.OpenFile(fname, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
 }
 
+func readCategoryConf(cat, fname string) *categoryConf {
+	cf := &categoryConf{}
+	decodeFile(fname, &cf)
+	for i := range cf.Articles {
+		cf.Articles[i].Category = cat
+	}
+	return cf
+}
+
 func main() {
 	if len(os.Args) != 3 {
 		fmt.Fprintln(os.Stderr, "Usage: genblog <src dir> <dst dir>")
@@ -153,8 +163,7 @@ func main() {
 	homepage := &homepageDot{}
 
 	for _, cm := range bf.Categories {
-		cf := &categoryConf{}
-		decodeFile(path.Join(srcDir, cm.Name, "index.toml"), &cf)
+		cf := readCategoryConf(cm.Name, path.Join(srcDir, cm.Name, "index.toml"))
 
 		cDir := path.Join(dstDir, cm.Name)
 		// Create directory

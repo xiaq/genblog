@@ -59,7 +59,6 @@ input, select { vertical-align: middle; }
 
 #header > a, a.nav-link {
     color: black;
-    text-decoration: none;
 }
 
 #category-list > li {
@@ -72,6 +71,8 @@ input, select { vertical-align: middle; }
 }
 
 .nav-link {
+    color: black;
+    text-decoration: none;
     padding-bottom: 2px;
     border-bottom: 2px solid #d0d0d0;
 }
@@ -180,9 +181,10 @@ const baseTemplateText = `<!doctype html>
 
 {{ define "article-list" }}
 	<ul id="article-list">
+		{{ $root := .Root }}
 		{{ range $info := .Articles }}
 			<li>
-				<a href="{{ $info.Name }}.html" class="nav-link">{{ $info.Title }}</a> 
+				<a href="{{ $root }}/{{ $info.Category }}/{{ $info.Name }}.html" class="nav-link">{{ $info.Title }}</a> 
 				<span class="article-meta">{{ $info.Timestamp }}</span>
 			</li>
 		{{ end }}
