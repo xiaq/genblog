@@ -213,6 +213,7 @@ const baseTemplateText = `<!doctype html>
                 {{ end }}
                 {{ $info.Timestamp }}
                 </span>
+                <div class="clear"></div>
 			</li>
 		{{ end }}
 	</ul>
