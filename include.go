@@ -188,10 +188,17 @@ const baseTemplateText = `<!doctype html>
 {{ define "article-list" }}
 	<ul id="article-list">
 		{{ $root := .Root }}
+        {{ $isCat := .IsCategory }}
+        {{ $catMap := .CategoryMap }}
 		{{ range $info := .Articles }}
 			<li>
 				<a href="{{ $root }}/{{ $info.Category }}/{{ $info.Name }}.html" class="nav-link">{{ $info.Title }}</a> 
-				<span class="article-meta">{{ $info.Timestamp }}</span>
+				<span class="article-meta">
+                {{ if not $isCat }}
+                    {{ index $catMap $info.Category }} ·
+                {{ end }}
+                {{ $info.Timestamp }}
+                </span>
 			</li>
 		{{ end }}
 	</ul>
