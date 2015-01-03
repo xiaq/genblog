@@ -145,6 +145,19 @@ input, select { vertical-align: middle; }
 .clear, hr {
     clear: both;
 }
+
+hr {
+    text-align: center;
+}
+
+hr:after {
+    content: "❧";
+    display: inline-block;
+    position: relative;
+    top: -0.5em;
+    padding: 0 0.25em;
+    background: white;
+}
 `
 
 const baseTemplateText = `<!doctype html>
