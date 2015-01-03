@@ -146,10 +146,13 @@ hr {
 
 hr:after {
     content: "❧";
+    color: black;
+    text-shadow: 0px 0px 2px #667;
     display: inline-block;
     position: relative;
     top: -0.5em;
     padding: 0 0.25em;
+    font-size: 1.1em;
     background: white;
 }
 `
