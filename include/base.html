@@ -16,7 +16,11 @@
 </head>
 <body>
     <div id="page">
-        <header id="header"><a href="{{ .Root }}/index.html">{{ .BlogTitle }}</a></header>
+        <header id="header">
+            <a href="{{ .Root }}/index.html" class="nav-link">
+                {{ .BlogTitle }}
+            </a>
+        </header>
         {{ template "content" . }}
     </div>
 </body>

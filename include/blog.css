@@ -23,10 +23,6 @@ body {
     margin-bottom: 2rem;
 }
 
-#header > a, a.nav-link {
-    color: black;
-}
-
 #category-list > li {
     list-style: none;
     display: inline;
@@ -38,9 +34,11 @@ body {
 
 .nav-link {
     color: black;
+    display: inline-block;
     text-decoration: none;
-    padding-bottom: 2px;
-    border-bottom: 2px solid #d0d0d0;
+    padding-bottom: 0.12em;
+    margin-bottom: 2px;
+    border-bottom: 2px solid #bbb;
 }
 
 .nav-link.current, .nav-link.current:hover {
@@ -48,12 +46,12 @@ body {
 }
 
 .nav-link:hover {
-    border-bottom-color: #888888;
+    border-bottom-color: black;
 }
 
 #category-list > li+li:before {
     content: '· ';
-    color: #888888;
+    color: #888;
 }
 
 #article p {
@@ -94,6 +92,7 @@ body {
 
 .article-meta {
     float: right;
+    display: inline-block;
 }
 
 /* Category list after an article */
@@ -107,6 +106,7 @@ body {
 }
 
 hr {
+    border-color: #aaa;
     text-align: center;
 }
 

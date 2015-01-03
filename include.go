@@ -57,10 +57,6 @@ input, select { vertical-align: middle; }
     margin-bottom: 2rem;
 }
 
-#header > a, a.nav-link {
-    color: black;
-}
-
 #category-list > li {
     list-style: none;
     display: inline;
@@ -72,9 +68,11 @@ input, select { vertical-align: middle; }
 
 .nav-link {
     color: black;
+    display: inline-block;
     text-decoration: none;
-    padding-bottom: 2px;
-    border-bottom: 2px solid #d0d0d0;
+    padding-bottom: 0.12em;
+    margin-bottom: 2px;
+    border-bottom: 2px solid #bbb;
 }
 
 .nav-link.current, .nav-link.current:hover {
@@ -82,12 +80,12 @@ input, select { vertical-align: middle; }
 }
 
 .nav-link:hover {
-    border-bottom-color: #888888;
+    border-bottom-color: black;
 }
 
 #category-list > li+li:before {
     content: '· ';
-    color: #888888;
+    color: #888;
 }
 
 #article p {
@@ -128,6 +126,7 @@ input, select { vertical-align: middle; }
 
 .article-meta {
     float: right;
+    display: inline-block;
 }
 
 /* Category list after an article */
@@ -141,6 +140,7 @@ input, select { vertical-align: middle; }
 }
 
 hr {
+    border-color: #aaa;
     text-align: center;
 }
 
@@ -175,7 +175,11 @@ const baseTemplateText = `<!doctype html>
 </head>
 <body>
     <div id="page">
-        <header id="header"><a href="{{ .Root }}/index.html">{{ .BlogTitle }}</a></header>
+        <header id="header">
+            <a href="{{ .Root }}/index.html" class="nav-link">
+                {{ .BlogTitle }}
+            </a>
+        </header>
         {{ template "content" . }}
     </div>
 </body>
