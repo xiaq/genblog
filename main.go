@@ -93,7 +93,7 @@ type homepageDot struct {
 func (h *homepageDot) insertNewArticle(am articleMeta, nmax int) {
 	var i int
 	for i = len(h.Articles); i > 0; i-- {
-		if h.Articles[i-1].Timestamp < am.Timestamp {
+		if h.Articles[i-1].Timestamp > am.Timestamp {
 			break
 		}
 	}
