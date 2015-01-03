@@ -126,12 +126,6 @@ input, select { vertical-align: middle; }
     margin-bottom: 0.7em;
 }
 
-.article-footer {
-	clear: both;
-	float: right;
-	margin-bottom: 1.5em;
-}
-
 .article-meta {
     float: right;
 }
@@ -221,14 +215,16 @@ const baseTemplateText = `<!doctype html>
 const articleTemplateText = `{{ define "content" }}
 	<article id="article">
 		<h1>{{ .Title }}</h1>
+        <div class="clear"></div>
+        <span class="article-meta">
+            <a href="{{ .Root }}/{{ .Category }}/index.html" class="nav-link">
+                {{ index .CategoryMap .Category }}
+            </a>
+            ·
+            {{ .Timestamp }}</span>
+        <div class="clear"></div>
 		{{ .Content }}
 	<div class="clear"></div>
-	<span class="article-footer">
-		<a href="{{ .Root }}/{{ .Category }}/index.html" class="nav-link">
-			{{ index .CategoryMap .Category }}
-		</a>
-		·
-		{{ .Timestamp }}</span>
 	</article>
 	<hr>
 	{{ if .IsHomepage }}
