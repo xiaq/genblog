@@ -91,8 +91,8 @@ input, select { vertical-align: middle; }
 }
 
 #article p {
-	line-height: 1.1;
-	margin-bottom: 0.6em;
+	line-height: 1.2;
+	margin-bottom: 0.7em;
 }
 
 /* Only use headers up to h3 */
@@ -116,10 +116,14 @@ input, select { vertical-align: middle; }
     font-size: 1.1em;
 }
 
+#article ul, #article ol {
+    margin-left: 1em;
+}
+
 #article-list > li {
     list-style: square inside;
     padding-bottom: 2px;
-    margin-bottom: 4px;
+    margin-bottom: 0.7em;
 }
 
 .article-footer {
