@@ -133,7 +133,7 @@ func openForWrite(fname string) (*os.File, error) {
 
 func readCategoryConf(cat, fname string) *categoryConf {
 	cf := &categoryConf{}
-	decodeFile(fname, &cf)
+	decodeFile(fname, cf)
 	for i := range cf.Articles {
 		cf.Articles[i].Category = cat
 	}
@@ -149,7 +149,7 @@ func main() {
 	dstDir := os.Args[2]
 
 	bf := &blogConf{}
-	decodeFile(path.Join(srcDir, "index.toml"), &bf)
+	decodeFile(path.Join(srcDir, "index.toml"), bf)
 	bd := newBaseDot(bf.Title, bf.RecentTitle, bf.CategoryListTitle, bf.Categories)
 
 	categoryTmpl := template.New("category")
