@@ -15,13 +15,13 @@
 	<hr>
 	{{ if .IsHomepage }}
 		<div class="recent">
-			{{ .RecentTitle }}
+			{{ .L10N.RecentTitle }}
 			{{ template "article-list" . }}
 		</div>
 		<hr>
 	{{ end }}
 	<div id="article-category-list">
-		{{ .CategoryListTitle }}
+		{{ .L10N.CategoryListTitle }}
 		{{ template "category-list" . }}
 	</div>
 	<div class="clear"></div>

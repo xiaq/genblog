@@ -15,8 +15,12 @@ import (
 type blogConf struct {
 	Title      string
 	Categories []categoryMeta
-	Recent int
-	RecentTitle string
+	Recent     int
+	L10N       l10nConf
+}
+
+type l10nConf struct {
+	RecentTitle       string
 	CategoryListTitle string
 }
 
@@ -26,8 +30,7 @@ type categoryConf struct {
 
 type baseDot struct {
 	BlogTitle  string
-	RecentTitle string
-	CategoryListTitle string
+	L10N       *l10nConf
 	Categories []categoryMeta
 
 	CategoryMap map[string]string
@@ -39,8 +42,8 @@ type categoryMeta struct {
 	Title string
 }
 
-func newBaseDot(t, rt, clt string, cs []categoryMeta) *baseDot {
-	b := &baseDot{t, rt, clt, cs, make(map[string]string), css}
+func newBaseDot(t string, l *l10nConf, cs []categoryMeta) *baseDot {
+	b := &baseDot{t, l, cs, make(map[string]string), css}
 	for _, m := range cs {
 		b.CategoryMap[m.Name] = m.Title
 	}
@@ -150,7 +153,7 @@ func main() {
 
 	bf := &blogConf{}
 	decodeFile(path.Join(srcDir, "index.toml"), bf)
-	bd := newBaseDot(bf.Title, bf.RecentTitle, bf.CategoryListTitle, bf.Categories)
+	bd := newBaseDot(bf.Title, &bf.L10N, bf.Categories)
 
 	categoryTmpl := template.New("category")
 	template.Must(categoryTmpl.Parse(baseTemplateText))
