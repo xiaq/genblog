@@ -100,6 +100,7 @@ input, select { vertical-align: middle; }
     margin-top: 0.6em;
     margin-bottom: 0.6em;
     font-weight: normal;
+    font-variant: small-caps;
 }
 
 #article h1 {
@@ -111,7 +112,9 @@ input, select { vertical-align: middle; }
 }
 
 #article h3 {
-    font-size: 1.1em;
+    font-family: inherit;
+    font-size: 1em;
+    font-weight: bold;
 }
 
 #article ul, #article ol {
