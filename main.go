@@ -46,9 +46,10 @@ type categoryMeta struct {
 	Title string
 }
 
-func newBaseDot(t, u string, l *l10nConf, cs []categoryMeta) *baseDot {
-	b := &baseDot{t, u, l, cs, make(map[string]string), css}
-	for _, m := range cs {
+func newBaseDot(bc *blogConf) *baseDot {
+	b := &baseDot{bc.Title, bc.RootURL, &bc.L10N,
+		bc.Categories, make(map[string]string), css}
+	for _, m := range bc.Categories {
 		b.CategoryMap[m.Name] = m.Title
 	}
 	return b
@@ -81,12 +82,12 @@ type article struct {
 }
 
 type articleDot struct {
-	baseDot
+	*baseDot
 	article
 }
 
 type categoryDot struct {
-	baseDot
+	*baseDot
 	Category string
 	Articles []articleMeta
 }
@@ -111,7 +112,7 @@ func (h *homepageDot) Root() string {
 }
 
 type feedDot struct {
-	baseDot
+	*baseDot
 	Articles     []article
 	LastModified rfc3339Time
 }
@@ -166,12 +167,12 @@ func openForWrite(fname string) (*os.File, error) {
 }
 
 func readCategoryConf(cat, fname string) *categoryConf {
-	cf := &categoryConf{}
-	decodeFile(fname, cf)
-	for i := range cf.Articles {
-		cf.Articles[i].Category = cat
+	conf := &categoryConf{}
+	decodeFile(fname, conf)
+	for i := range conf.Articles {
+		conf.Articles[i].Category = cat
 	}
-	return cf
+	return conf
 }
 
 func max(a, b int) int {
@@ -201,43 +202,43 @@ func main() {
 	srcDir := os.Args[1]
 	dstDir := os.Args[2]
 
-	bf := &blogConf{}
-	decodeFile(path.Join(srcDir, "index.toml"), bf)
-	bd := newBaseDot(bf.Title, bf.RootURL, &bf.L10N, bf.Categories)
+	conf := &blogConf{}
+	decodeFile(path.Join(srcDir, "index.toml"), conf)
+	base := newBaseDot(conf)
 
 	homepage := &homepageDot{}
 
-	narticles := max(bf.IndexPosts, bf.FeedPosts)
+	narticles := max(conf.IndexPosts, conf.FeedPosts)
 	articles := make([]article, 0, narticles)
 
 	var lastModified time.Time
 
-	for _, cm := range bf.Categories {
-		cf := readCategoryConf(cm.Name, path.Join(srcDir, cm.Name, "index.toml"))
+	for _, cat := range conf.Categories {
+		catConf := readCategoryConf(cat.Name, path.Join(srcDir, cat.Name, "index.toml"))
 
-		cDir := path.Join(dstDir, cm.Name)
+		catDir := path.Join(dstDir, cat.Name)
 		// Create directory
-		err := os.MkdirAll(cDir, 0755)
+		err := os.MkdirAll(catDir, 0755)
 		if err != nil {
 			log.Fatalln(err)
 		}
 
 		// Generate index
-		file, err := openForWrite(path.Join(cDir, "index.html"))
+		file, err := openForWrite(path.Join(catDir, "index.html"))
 		if err != nil {
 			log.Fatalln(err)
 		}
 		defer file.Close()
-		cd := &categoryDot{*bd, cm.Name, cf.Articles}
+		cd := &categoryDot{base, cat.Name, catConf.Articles}
 		err = categoryTmpl.Execute(file, cd)
 		if err != nil {
 			log.Fatalln(err)
 		}
 
 		// Generate articles
-		for _, am := range cf.Articles {
+		for _, am := range catConf.Articles {
 			// Read article
-			fname := path.Join(srcDir, cm.Name, am.Name+".html")
+			fname := path.Join(srcDir, cat.Name, am.Name+".html")
 			file, err := os.Open(fname)
 			if err != nil {
 				log.Fatalln(err)
@@ -255,15 +256,15 @@ func main() {
 				lastModified = modTime
 			}
 
-			a := article{am, cm.Name, string(content), modTime}
+			a := article{am, cat.Name, string(content), modTime}
 
 			// Generate article
-			file, err = openForWrite(path.Join(cDir, am.Name+".html"))
+			file, err = openForWrite(path.Join(catDir, am.Name+".html"))
 			if err != nil {
 				log.Fatalln(err)
 			}
 			defer file.Close()
-			ad := &articleDot{*bd, a}
+			ad := &articleDot{base, a}
 			err = articleTmpl.Execute(file, ad)
 			if err != nil {
 				log.Fatalln(err)
@@ -277,7 +278,7 @@ func main() {
 		}
 	}
 	// Generate homepage
-	homepage.Articles = articlesToMetas(articles, bf.IndexPosts)
+	homepage.Articles = articlesToMetas(articles, conf.IndexPosts)
 	file, err := openForWrite(path.Join(dstDir, "index.html"))
 	err = articleTmpl.Execute(file, homepage)
 	if err != nil {
@@ -286,10 +287,10 @@ func main() {
 
 	// Generate feed
 	feedArticles := articles
-	if len(articles) > bf.FeedPosts {
-		feedArticles = articles[:bf.FeedPosts]
+	if len(articles) > conf.FeedPosts {
+		feedArticles = articles[:conf.FeedPosts]
 	}
-	feed := feedDot{*bd, feedArticles, rfc3339Time(lastModified)}
+	feed := feedDot{base, feedArticles, rfc3339Time(lastModified)}
 	file, err = openForWrite(path.Join(dstDir, "feed.atom"))
 	err = feedTmpl.Execute(file, feed)
 	if err != nil {
