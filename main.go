@@ -78,7 +78,7 @@ type article struct {
 	articleMeta
 	Category     string
 	Content      string
-	LastModified time.Time
+	LastModified rfc3339Time
 }
 
 type articleDot struct {
@@ -257,7 +257,7 @@ func main() {
 				lastModified = modTime
 			}
 
-			a := article{am, cat.Name, string(content), modTime}
+			a := article{am, cat.Name, string(content), rfc3339Time(modTime)}
 
 			// Generate article
 			file, err = openForWrite(path.Join(catDir, am.Name+".html"))
