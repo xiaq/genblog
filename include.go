@@ -268,9 +268,10 @@ const feedTemplText = `<?xml version="1.0" encoding="utf-8"?>
 	<link href="{{ .RootURL }}"/>
 	<link rel="self" href="{{ .RootURL }}/feed.atom"/>
 	<updated>{{ .LastModified }}</updated>
-	<id>{{ .RootURL }}</id>
+	<id>{{ .RootURL }}/</id>
 
 	{{ $rootURL := .RootURL }}
+	{{ $author := .Author }}
 	{{ range $info := .Articles}}
 	<entry>
 		<title>{{ $info.Title }}</title>
@@ -278,6 +279,7 @@ const feedTemplText = `<?xml version="1.0" encoding="utf-8"?>
 		<link rel="alternate" href="{{ $link }}"/>
 		<id>{{ $link }}</id>
 		<updated>{{ $info.LastModified }}</updated>
+		<author><name>{{ $author }}</name></author>
 		<content type="html">{{ $info.Content | html }}</content>
 	</entry>
 	{{ end }}

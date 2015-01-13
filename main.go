@@ -15,6 +15,7 @@ import (
 
 type blogConf struct {
 	Title      string
+	Author     string
 	Categories []categoryMeta
 	IndexPosts int
 	FeedPosts  int
@@ -33,6 +34,7 @@ type categoryConf struct {
 
 type baseDot struct {
 	BlogTitle  string
+	Author     string
 	RootURL    string
 	L10N       *l10nConf
 	Categories []categoryMeta
@@ -47,7 +49,7 @@ type categoryMeta struct {
 }
 
 func newBaseDot(bc *blogConf) *baseDot {
-	b := &baseDot{bc.Title, bc.RootURL, &bc.L10N,
+	b := &baseDot{bc.Title, bc.Author, bc.RootURL, &bc.L10N,
 		bc.Categories, make(map[string]string), css}
 	for _, m := range bc.Categories {
 		b.CategoryMap[m.Name] = m.Title
