@@ -243,6 +243,7 @@ func main() {
 			if err != nil {
 				log.Fatalln(err)
 			}
+			defer file.Close()
 			content, err := ioutil.ReadAll(file)
 			if err != nil {
 				log.Fatalln(err)
