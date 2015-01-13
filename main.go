@@ -157,7 +157,7 @@ func articlesToMetas(as []article, n int) []articleMeta {
 func decodeFile(fname string, v interface{}) {
 	_, err := toml.DecodeFile(fname, v)
 	if err != nil {
-		log.Fatalf("when reading %v: %v", fname, err)
+		log.Fatalln(err)
 	}
 }
 
@@ -219,19 +219,19 @@ func main() {
 		// Create directory
 		err := os.MkdirAll(cDir, 0755)
 		if err != nil {
-			log.Fatalf("failed to create output dir for %v: %v\n", cm.Name, err)
+			log.Fatalln(err)
 		}
 
 		// Generate index
 		file, err := openForWrite(path.Join(cDir, "index.html"))
 		if err != nil {
-			log.Fatalf("failed to open index of %v: %v\n", cm.Name, err)
+			log.Fatalln(err)
 		}
 		defer file.Close()
 		cd := &categoryDot{*bd, cm.Name, cf.Articles}
 		err = categoryTmpl.Execute(file, cd)
 		if err != nil {
-			log.Fatalf("failed to render index of %v: %v\n", cm.Name, err)
+			log.Fatalln(err)
 		}
 
 		// Generate articles
@@ -240,15 +240,15 @@ func main() {
 			fname := path.Join(srcDir, cm.Name, am.Name+".html")
 			file, err := os.Open(fname)
 			if err != nil {
-				log.Fatalf("failed to read article %v/%v: %v\n", cm.Name, am.Name, err)
+				log.Fatalln(err)
 			}
 			content, err := ioutil.ReadAll(file)
 			if err != nil {
-				log.Fatalf("failed to read article %v/%v: %v\n", cm.Name, am.Name, err)
+				log.Fatalln(err)
 			}
 			fi, err := file.Stat()
 			if err != nil {
-				log.Fatalf("failed to stat article %v/%v: %v\n", cm.Name, am.Name, err)
+				log.Fatalln(err)
 			}
 			modTime := fi.ModTime()
 			if modTime.After(lastModified) {
@@ -260,13 +260,13 @@ func main() {
 			// Generate article
 			file, err = openForWrite(path.Join(cDir, am.Name+".html"))
 			if err != nil {
-				log.Fatalf("failed to open article %v/%v: %v\n", cm.Name, am.Name, err)
+				log.Fatalln(err)
 			}
 			defer file.Close()
 			ad := &articleDot{*bd, a}
 			err = articleTmpl.Execute(file, ad)
 			if err != nil {
-				log.Fatalf("failed to render article %v/%v: %v\n", cm.Name, am.Name, err)
+				log.Fatalln(err)
 			}
 
 			articles = insertNewArticle(articles, a, narticles)
@@ -281,7 +281,7 @@ func main() {
 	file, err := openForWrite(path.Join(dstDir, "index.html"))
 	err = articleTmpl.Execute(file, homepage)
 	if err != nil {
-		log.Fatalf("failed to render homepage: %v\n", err)
+		log.Fatalln(err)
 	}
 
 	// Generate feed
@@ -293,6 +293,6 @@ func main() {
 	file, err = openForWrite(path.Join(dstDir, "feed.atom"))
 	err = feedTmpl.Execute(file, feed)
 	if err != nil {
-		log.Fatalf("failed to render feed: %v\n", err)
+		log.Fatalln(err)
 	}
 }
