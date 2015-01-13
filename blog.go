@@ -1,7 +1,9 @@
 package main
 
 import (
+	"io/ioutil"
 	"log"
+	"os"
 
 	"github.com/BurntSushi/toml"
 )
@@ -93,4 +95,21 @@ func readCategoryConf(cat, fname string) *categoryConf {
 		conf.Articles[i].Category = cat
 	}
 	return conf
+}
+
+func readAllAndStat(fname string) ([]byte, os.FileInfo) {
+	file, err := os.Open(fname)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	defer file.Close()
+	content, err := ioutil.ReadAll(file)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	fi, err := file.Stat()
+	if err != nil {
+		log.Fatalln(err)
+	}
+	return content, fi
 }

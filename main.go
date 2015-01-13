@@ -3,7 +3,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path"
@@ -64,20 +63,7 @@ func main() {
 		// Generate articles
 		for _, am := range catConf.Articles {
 			// Read article
-			fname := path.Join(srcDir, cat.Name, am.Name+".html")
-			file, err := os.Open(fname)
-			if err != nil {
-				log.Fatalln(err)
-			}
-			defer file.Close()
-			content, err := ioutil.ReadAll(file)
-			if err != nil {
-				log.Fatalln(err)
-			}
-			fi, err := file.Stat()
-			if err != nil {
-				log.Fatalln(err)
-			}
+			content, fi := readAllAndStat(path.Join(srcDir, cat.Name, am.Name+".html"))
 			modTime := fi.ModTime()
 			if modTime.After(lastModified) {
 				lastModified = modTime
