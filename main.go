@@ -181,7 +181,19 @@ func max(a, b int) int {
 	return b
 }
 
+func newTemplate(name string, sources ...string) *template.Template {
+	t := template.New(name)
+	for _, source := range sources {
+		template.Must(t.Parse(source))
+	}
+	return t
+}
+
 func main() {
+	categoryTmpl := newTemplate("category", baseTemplText, categoryTemplText)
+	articleTmpl := newTemplate("article", baseTemplText, articleTemplText)
+	feedTmpl := newTemplate("feed", feedTemplText)
+
 	if len(os.Args) != 3 {
 		fmt.Fprintln(os.Stderr, "Usage: genblog <src dir> <dst dir>")
 		os.Exit(1)
@@ -192,18 +204,6 @@ func main() {
 	bf := &blogConf{}
 	decodeFile(path.Join(srcDir, "index.toml"), bf)
 	bd := newBaseDot(bf.Title, bf.RootURL, &bf.L10N, bf.Categories)
-
-	categoryTmpl := template.New("category")
-	template.Must(categoryTmpl.Parse(baseTemplateText))
-	template.Must(categoryTmpl.Parse(categoryTemplateText))
-
-	articleTmpl := template.New("article")
-	template.Must(articleTmpl.Parse(baseTemplateText))
-	template.Must(articleTmpl.Parse(articleTemplateText))
-
-	feedTmpl := template.New("feed")
-	// template.Must(feedTmpl.Parse(baseTemplateText))
-	template.Must(feedTmpl.Parse(feedTemplateText))
 
 	homepage := &homepageDot{}
 

@@ -160,7 +160,7 @@ hr:after {
 }
 `
 
-const baseTemplateText = `<!doctype html>
+const baseTemplText = `<!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -226,7 +226,7 @@ const baseTemplateText = `<!doctype html>
 {{ end }}
 `
 
-const articleTemplateText = `{{ define "content" }}
+const articleTemplText = `{{ define "content" }}
 	<article id="article">
 		<h1>{{ .Title }}</h1>
         <div class="clear"></div>
@@ -256,13 +256,13 @@ const articleTemplateText = `{{ define "content" }}
 {{ end }}
 `
 
-const categoryTemplateText = `{{ define "content" }}
+const categoryTemplText = `{{ define "content" }}
 	{{ template "category-list" . }}
 	{{ template "article-list" . }}
 {{ end }}
 `
 
-const feedTemplateText = `<?xml version="1.0" encoding="utf-8"?>
+const feedTemplText = `<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 	<title>{{ .BlogTitle }}</title>
 	<link href="{{ .RootURL }}"/>

@@ -11,11 +11,11 @@ package main
 
 const css = `i reset.css` + `i blog.css`
 
-const baseTemplateText = `i base.html`
+const baseTemplText = `i base.html`
 
-const articleTemplateText = `i article.html`
+const articleTemplText = `i article.html`
 
-const categoryTemplateText = `i category.html`
+const categoryTemplText = `i category.html`
 
-const feedTemplateText = `i feed.atom`
+const feedTemplText = `i feed.atom`
 EOF
