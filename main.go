@@ -96,8 +96,6 @@ func (c *categoryDot) IsCategory() bool {
 	return true
 }
 
-const recentArticles = 5
-
 type homepageDot struct {
 	articleDot
 	Articles []articleMeta
