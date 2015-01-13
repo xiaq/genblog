@@ -16,4 +16,6 @@ const baseTemplateText = `i base.html`
 const articleTemplateText = `i article.html`
 
 const categoryTemplateText = `i category.html`
+
+const feedTemplateText = `i feed.atom`
 EOF

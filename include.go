@@ -165,6 +165,9 @@ const baseTemplateText = `<!doctype html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+	{{ if .IsHomepage }}
+		<link rel="alternate" type="application/atom+xml" href="{{ .RootURL }}/feed.atom">
+	{{ end }}
 
     <title>
         {{ .BlogTitle }} » 
@@ -257,4 +260,26 @@ const categoryTemplateText = `{{ define "content" }}
 	{{ template "category-list" . }}
 	{{ template "article-list" . }}
 {{ end }}
+`
+
+const feedTemplateText = `<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+	<title>{{ .BlogTitle }}</title>
+	<link href="{{ .RootURL }}"/>
+	<link rel="self" href="{{ .RootURL }}/feed.atom"/>
+	<updated>{{ .LastModified }}</updated>
+	<id>{{ .RootURL }}</id>
+
+	{{ $rootURL := .RootURL }}
+	{{ range $info := .Articles}}
+	<entry>
+		<title>{{ $info.Title }}</title>
+		{{ $link := print $rootURL "/" $info.Category "/" $info.Name ".html" }}
+		<link rel="alternate" href="{{ $link }}"/>
+		<id>{{ $link }}</id>
+		<updated>{{ $info.LastModified }}</updated>
+		<content type="html">{{ $info.Content | html }}</content>
+	</entry>
+	{{ end }}
+</feed>
 `

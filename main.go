@@ -8,6 +8,7 @@ import (
 	"os"
 	"path"
 	"text/template"
+	"time"
 
 	"github.com/BurntSushi/toml"
 )
@@ -15,7 +16,9 @@ import (
 type blogConf struct {
 	Title      string
 	Categories []categoryMeta
-	Recent     int
+	IndexPosts int
+	FeedPosts  int
+	RootURL    string
 	L10N       l10nConf
 }
 
@@ -30,6 +33,7 @@ type categoryConf struct {
 
 type baseDot struct {
 	BlogTitle  string
+	RootURL    string
 	L10N       *l10nConf
 	Categories []categoryMeta
 
@@ -42,8 +46,8 @@ type categoryMeta struct {
 	Title string
 }
 
-func newBaseDot(t string, l *l10nConf, cs []categoryMeta) *baseDot {
-	b := &baseDot{t, l, cs, make(map[string]string), css}
+func newBaseDot(t, u string, l *l10nConf, cs []categoryMeta) *baseDot {
+	b := &baseDot{t, u, l, cs, make(map[string]string), css}
 	for _, m := range cs {
 		b.CategoryMap[m.Name] = m.Title
 	}
@@ -69,11 +73,16 @@ type articleMeta struct {
 	Timestamp string
 }
 
+type article struct {
+	articleMeta
+	Category     string
+	Content      string
+	LastModified time.Time
+}
+
 type articleDot struct {
 	baseDot
-	articleMeta
-	Category string
-	Content  string
+	article
 }
 
 type categoryDot struct {
@@ -93,34 +102,56 @@ type homepageDot struct {
 	Articles []articleMeta
 }
 
-func (h *homepageDot) insertNewArticle(am articleMeta, nmax int) {
-	var i int
-	for i = len(h.Articles); i > 0; i-- {
-		if h.Articles[i-1].Timestamp > am.Timestamp {
-			break
-		}
-	}
-	if i == len(h.Articles) {
-		if i < nmax {
-			h.Articles = append(h.Articles, am)
-		}
-		return
-	}
-
-	if len(h.Articles) < nmax {
-		h.Articles = append(h.Articles, articleMeta{})
-	}
-
-	copy(h.Articles[i+1:], h.Articles[i:])
-	h.Articles[i] = am
-}
-
 func (h *homepageDot) IsHomepage() bool {
 	return true
 }
 
 func (h *homepageDot) Root() string {
 	return "."
+}
+
+type feedDot struct {
+	baseDot
+	Articles     []article
+	LastModified rfc3339Time
+}
+
+type rfc3339Time time.Time
+
+func (t rfc3339Time) String() string {
+	return time.Time(t).Format(time.RFC3339)
+}
+
+func insertNewArticle(as []article, a article, nmax int) []article {
+	var i int
+	for i = len(as); i > 0; i-- {
+		if as[i-1].Timestamp > a.Timestamp {
+			break
+		}
+	}
+	if i == len(as) {
+		if i < nmax {
+			as = append(as, a)
+		}
+		return as
+	}
+	if len(as) < nmax {
+		as = append(as, article{})
+	}
+	copy(as[i+1:], as[i:])
+	as[i] = a
+	return as
+}
+
+func articlesToMetas(as []article, n int) []articleMeta {
+	ams := make([]articleMeta, len(as))
+	for i, a := range as {
+		if i == n {
+			break
+		}
+		ams[i] = a.articleMeta
+	}
+	return ams
 }
 
 func decodeFile(fname string, v interface{}) {
@@ -143,6 +174,13 @@ func readCategoryConf(cat, fname string) *categoryConf {
 	return cf
 }
 
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
 func main() {
 	if len(os.Args) != 3 {
 		fmt.Fprintln(os.Stderr, "Usage: genblog <src dir> <dst dir>")
@@ -153,7 +191,7 @@ func main() {
 
 	bf := &blogConf{}
 	decodeFile(path.Join(srcDir, "index.toml"), bf)
-	bd := newBaseDot(bf.Title, &bf.L10N, bf.Categories)
+	bd := newBaseDot(bf.Title, bf.RootURL, &bf.L10N, bf.Categories)
 
 	categoryTmpl := template.New("category")
 	template.Must(categoryTmpl.Parse(baseTemplateText))
@@ -163,7 +201,16 @@ func main() {
 	template.Must(articleTmpl.Parse(baseTemplateText))
 	template.Must(articleTmpl.Parse(articleTemplateText))
 
+	feedTmpl := template.New("feed")
+	// template.Must(feedTmpl.Parse(baseTemplateText))
+	template.Must(feedTmpl.Parse(feedTemplateText))
+
 	homepage := &homepageDot{}
+
+	narticles := max(bf.IndexPosts, bf.FeedPosts)
+	articles := make([]article, 0, narticles)
+
+	var lastModified time.Time
 
 	for _, cm := range bf.Categories {
 		cf := readCategoryConf(cm.Name, path.Join(srcDir, cm.Name, "index.toml"))
@@ -190,34 +237,62 @@ func main() {
 		// Generate articles
 		for _, am := range cf.Articles {
 			// Read article
-			content, err := ioutil.ReadFile(path.Join(srcDir, cm.Name, am.Name+".html"))
+			fname := path.Join(srcDir, cm.Name, am.Name+".html")
+			file, err := os.Open(fname)
 			if err != nil {
 				log.Fatalf("failed to read article %v/%v: %v\n", cm.Name, am.Name, err)
 			}
+			content, err := ioutil.ReadAll(file)
+			if err != nil {
+				log.Fatalf("failed to read article %v/%v: %v\n", cm.Name, am.Name, err)
+			}
+			fi, err := file.Stat()
+			if err != nil {
+				log.Fatalf("failed to stat article %v/%v: %v\n", cm.Name, am.Name, err)
+			}
+			modTime := fi.ModTime()
+			if modTime.After(lastModified) {
+				lastModified = modTime
+			}
+
+			a := article{am, cm.Name, string(content), modTime}
 
 			// Generate article
-			file, err := openForWrite(path.Join(cDir, am.Name+".html"))
+			file, err = openForWrite(path.Join(cDir, am.Name+".html"))
 			if err != nil {
 				log.Fatalf("failed to open article %v/%v: %v\n", cm.Name, am.Name, err)
 			}
 			defer file.Close()
-			ad := &articleDot{*bd, am, cm.Name, string(content)}
+			ad := &articleDot{*bd, a}
 			err = articleTmpl.Execute(file, ad)
 			if err != nil {
 				log.Fatalf("failed to render article %v/%v: %v\n", cm.Name, am.Name, err)
 			}
 
-			homepage.insertNewArticle(ad.articleMeta, bf.Recent)
+			articles = insertNewArticle(articles, a, narticles)
 
-			if homepage.Timestamp < ad.Timestamp {
+			if homepage.Timestamp < am.Timestamp {
 				homepage.articleDot = *ad
 			}
 		}
 	}
 	// Generate homepage
+	homepage.Articles = articlesToMetas(articles, bf.IndexPosts)
 	file, err := openForWrite(path.Join(dstDir, "index.html"))
 	err = articleTmpl.Execute(file, homepage)
 	if err != nil {
 		log.Fatalf("failed to render homepage: %v\n", err)
+	}
+
+	// Generate feed
+	feedArticles := articles
+	if len(articles) > bf.FeedPosts {
+		feedArticles = articles[:bf.FeedPosts]
+	}
+	feed := feedDot{*bd, feedArticles, rfc3339Time(lastModified)}
+	file, err = openForWrite(path.Join(dstDir, "feed.atom"))
+	err = feedTmpl.Execute(file, feed)
+	if err != nil {
+		log.Fatalf("failed to render feed: %v\n", err)
 	}
 }
