@@ -71,7 +71,7 @@ func insertNewArticle(as []article, a article, nmax int) []article {
 }
 
 func articlesToMetas(as []article, n int) []articleMeta {
-	ams := make([]articleMeta, len(as))
+	ams := make([]articleMeta, min(n, len(as)))
 	for i, a := range as {
 		if i == n {
 			break
