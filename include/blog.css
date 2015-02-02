@@ -4,23 +4,22 @@ body {
     font-family: Georgia, Times, Serif, FZShuSong-Z01, SimSun;
 }
 
-#page {
+.card {
     background-color: white;
     padding: 24px 24px 20px 24px;
     box-shadow: 2px 1px 3px #cccccc;
 }
 
 @media screen and (min-width: 768px) {
-    #page {
+    .card {
         margin: 32px auto 20px auto;
         padding: 48px 48px 40px 48px;
         width: 672px;
     }
 }
 
-#header {
+.card#header {
     font-size: 2em;
-    margin-bottom: 2rem;
 }
 
 #category-list > li {

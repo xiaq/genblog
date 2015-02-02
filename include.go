@@ -38,23 +38,22 @@ input, select { vertical-align: middle; }
     font-family: Georgia, Times, Serif, FZShuSong-Z01, SimSun;
 }
 
-#page {
+.card {
     background-color: white;
     padding: 24px 24px 20px 24px;
     box-shadow: 2px 1px 3px #cccccc;
 }
 
 @media screen and (min-width: 768px) {
-    #page {
+    .card {
         margin: 32px auto 20px auto;
         padding: 48px 48px 40px 48px;
         width: 672px;
     }
 }
 
-#header {
+.card#header {
     font-size: 2em;
-    margin-bottom: 2rem;
 }
 
 #category-list > li {
@@ -180,12 +179,12 @@ const baseTemplText = `<!doctype html>
     <style> {{ .CSS }} </style>
 </head>
 <body>
-    <div id="page">
-        <header id="header">
-            <a href="{{ .Root }}/index.html" class="nav-link">
-                {{ .BlogTitle }}
-            </a>
-        </header>
+    <div class="card" id="header">
+        <a href="{{ .Root }}/index.html" class="nav-link">
+            {{ .BlogTitle }}
+        </a>
+    </div>
+    <div class="card" id="article">
         {{ template "content" . }}
     </div>
 </body>

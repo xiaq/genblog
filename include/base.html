@@ -18,12 +18,12 @@
     <style> {{ .CSS }} </style>
 </head>
 <body>
-    <div id="page">
-        <header id="header">
-            <a href="{{ .Root }}/index.html" class="nav-link">
-                {{ .BlogTitle }}
-            </a>
-        </header>
+    <div class="card" id="header">
+        <a href="{{ .Root }}/index.html" class="nav-link">
+            {{ .BlogTitle }}
+        </a>
+    </div>
+    <div class="card" id="article">
         {{ template "content" . }}
     </div>
 </body>
