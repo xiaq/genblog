@@ -77,14 +77,14 @@ input, select { vertical-align: middle; }
 }
 
 .category-list > li+li {
-    margin-left: 1em;
+    margin-left: 0.5em;
 }
 
 .nav-link {
     color: black;
     display: inline-block;
     text-decoration: none;
-    padding-bottom: 0.12em;
+    padding-bottom: 1px;
     margin-bottom: 2px;
     border-bottom: 2px solid #bbb;
 }
@@ -201,7 +201,7 @@ const baseTemplText = `<!doctype html>
   <ul class="category-list">
     {{ range $info := .Categories }}
       <li class="{{ if eq $cat $info.Name }}current{{ end }}">
-        <a href="{{ categoryURL $info.Name }}" class="nav-link">
+        <a href="{{ categoryURL $info.Name }}" class="nav-link {{ if and (eq $cat $info.Name) (is "category") }} current {{ end }}">
           {{ $info.Title }}
         </a>
       </li>
@@ -241,7 +241,8 @@ const baseTemplText = `<!doctype html>
   <div class="card noted">
     <article class="article">
       <h1>
-        <a href="{{ articleURL .Category .Name }}" class="nav-link">
+        <a href="{{ articleURL .Category .Name }}"
+           class="nav-link {{ if is "article" }} current {{ end }}">
           {{ .Title }}
         </a>
       </h1>

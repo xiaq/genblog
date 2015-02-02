@@ -32,7 +32,7 @@
   <ul class="category-list">
     {{ range $info := .Categories }}
       <li class="{{ if eq $cat $info.Name }}current{{ end }}">
-        <a href="{{ categoryURL $info.Name }}" class="nav-link">
+        <a href="{{ categoryURL $info.Name }}" class="nav-link {{ if and (eq $cat $info.Name) (is "category") }} current {{ end }}">
           {{ $info.Title }}
         </a>
       </li>
@@ -72,7 +72,8 @@
   <div class="card noted">
     <article class="article">
       <h1>
-        <a href="{{ articleURL .Category .Name }}" class="nav-link">
+        <a href="{{ articleURL .Category .Name }}"
+           class="nav-link {{ if is "article" }} current {{ end }}">
           {{ .Title }}
         </a>
       </h1>

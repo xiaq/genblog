@@ -43,14 +43,14 @@ body {
 }
 
 .category-list > li+li {
-    margin-left: 1em;
+    margin-left: 0.5em;
 }
 
 .nav-link {
     color: black;
     display: inline-block;
     text-decoration: none;
-    padding-bottom: 0.12em;
+    padding-bottom: 1px;
     margin-bottom: 2px;
     border-bottom: 2px solid #bbb;
 }
