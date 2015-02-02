@@ -167,103 +167,105 @@ hr:after {
 const baseTemplText = `<!doctype html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
-	{{ if is "homepage" }}
-		<link rel="alternate" type="application/atom+xml" href="{{ .RootURL }}/feed.atom">
-	{{ end }}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+  {{ if is "homepage" }}
+    <link rel="alternate" type="application/atom+xml"
+          href="{{ .RootURL }}/feed.atom">
+  {{ end }}
 
-    <title>
-        {{ if is "homepage" }}
-            {{ .BlogTitle }}
-        {{ else if is "category" }}
-            {{ index .CategoryMap .Category }}
-        {{ else }}
-            {{ .Title }}
-        {{ end }}
-    </title>
-    <style> {{ .CSS }} </style>
+  <title>
+    {{ if is "homepage" }}
+      {{ .BlogTitle }}
+    {{ else if is "category" }}
+      {{ index .CategoryMap .Category }}
+    {{ else }}
+      {{ .Title }}
+    {{ end }}
+  </title>
+  <style> {{ .CSS }} </style>
 </head>
 <body>
-    <div class="card" id="header">
-        <a href="{{ rootURL }}" class="nav-link">
-            {{ .BlogTitle }}
-        </a>
-    </div>
-    {{ template "content" . }}
+  <div class="card" id="header">
+    <a href="{{ rootURL }}" class="nav-link">{{ .BlogTitle }}</a>
+  </div>
+  {{ template "content" . }}
 </body>
 </html>
 
 {{ define "category-list" }}
-	{{ $cat := .Category }}
-	<ul class="category-list">
-		{{ range $info := .Categories }}
-			<li><a href="{{ categoryURL $info.Name }}"
-				   class="nav-link {{ if and (is "category") (eq $cat $info.Name) }}current{{ end }}">
-				{{ $info.Title }}
-			</a></li>
-		{{ end }}
-	</ul>
+  {{ $cat := .Category }}
+  <ul class="category-list">
+    {{ range $info := .Categories }}
+      <li><a href="{{ categoryURL $info.Name }}"
+             class="nav-link {{ if and (is "category") (eq $cat $info.Name) }}current{{ end }}">
+          {{ $info.Title }}
+      </a></li>
+    {{ end }}
+  </ul>
 {{ end }}
 
 {{ define "article-list" }}
-	<ul class="article-list">
-        {{ $catMap := .CategoryMap }}
-		{{ range $info := .Articles }}
-			<li>
-				<a href="{{ articleURL $info.Category $info.Name }}" class="nav-link">{{ $info.Title }}</a>
-				<span class="article-meta">
-                {{ if not (is "category") }}
-                    {{ index $catMap $info.Category }} ·
-                {{ end }}
-                {{ $info.Timestamp }}
-                </span>
-                <div class="clear"></div>
-			</li>
-		{{ end }}
-	</ul>
+  <ul class="article-list">
+    {{ $catMap := .CategoryMap }}
+    {{ range $info := .Articles }}
+      <li>
+        <a href="{{ articleURL $info.Category $info.Name }}"
+           class="nav-link">{{ $info.Title }}</a>
+        <span class="article-meta">
+        {{ if not (is "category") }}
+          {{ index $catMap $info.Category }} ·
+        {{ end }}
+        {{ $info.Timestamp }}
+        </span>
+        <div class="clear"></div>
+      </li>
+    {{ end }}
+  </ul>
 {{ end }}
 
 {{ define "homepage-content" }}
-    {{ range .Articles }}
-        {{ template "article-content" . }}
-    {{ end }}
+  {{ range .Articles }}
+    {{ template "article-content" . }}
+  {{ end }}
 {{ end }}
 
 {{ define "article-content" }}
-<div class="card">
+  <div class="card">
     <article class="article">
-		<h1>
-            <a href="{{ articleURL .Category .Name }}" class="nav-link">
-                {{ .Title }}
-            </a>
-        </h1>
-        <div class="clear"></div>
-        <span class="article-meta header">
-            <a href="{{ categoryURL .Category }}" class="nav-link">
-                {{ index .CategoryMap .Category }}
-            </a>
-            ·
-            {{ .Timestamp }}</span>
-        <div class="clear"></div>
-		{{ .Content }}
-	<div class="clear"></div>
-	</article>
-	<hr>
-	<div class="article-category-list">
-		{{ .L10N.CategoryListTitle }}
-		{{ template "category-list" . }}
-	</div>
-	<div class="clear"></div>
-</div>
+      <h1>
+        <a href="{{ articleURL .Category .Name }}" class="nav-link">
+          {{ .Title }}
+        </a>
+      </h1>
+      <div class="clear"></div>
+      <span class="article-meta header">
+        <a href="{{ categoryURL .Category }}" class="nav-link">
+          {{ index .CategoryMap .Category }}
+        </a>
+        ·
+        {{ .Timestamp }}</span>
+      <div class="clear"></div>
+      {{ .Content }}
+      <div class="clear"></div>
+    </article>
+    <hr>
+    <div class="article-category-list">
+      {{ .L10N.CategoryListTitle }}
+      {{ template "category-list" . }}
+    </div>
+    <div class="clear"></div>
+  </div>
 {{ end }}
 
 {{ define "category-content" }}
-<div class="card">
-	{{ template "category-list" . }}
-	{{ template "article-list" . }}
-</div>
+  <div class="card">
+    {{ template "category-list" . }}
+    {{ template "article-list" . }}
+  </div>
 {{ end }}
+
+<!-- vi: se sw=2 ts=2 sts=2 et: -->
 `
 
 const feedTemplText = `<?xml version="1.0" encoding="utf-8"?>
