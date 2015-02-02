@@ -69,7 +69,7 @@ func contentIs(what string) string {
 func newTemplate(name, root string, sources ...string) *template.Template {
 	t := template.New(name).Funcs(template.FuncMap(map[string]interface{}{
 		"is": func(s string) bool { return s == name },
-		"rootURL": func() string {
+		"homepageURL": func() string {
 			return root + "/index.html"
 		},
 		"categoryURL": func(cat string) string {

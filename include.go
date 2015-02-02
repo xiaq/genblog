@@ -190,7 +190,7 @@ const baseTemplText = `<!doctype html>
 </head>
 <body>
   <div class="card" id="header">
-    <a href="{{ rootURL }}" class="nav-link">{{ .BlogTitle }}</a>
+    <a href="{{ homepageURL }}" class="nav-link">{{ .BlogTitle }}</a>
   </div>
   {{ template "content" . }}
 </body>
