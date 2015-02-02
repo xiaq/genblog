@@ -169,11 +169,14 @@ const baseTemplText = `<!doctype html>
 	{{ end }}
 
     <title>
-        {{ .BlogTitle }} » 
-        {{ if .IsCategory }}
-            {{ index .CategoryMap .Category }}
-        {{ else }}
-            {{ .Title }}
+        {{ .BlogTitle }}
+        {{ if not .IsHomepage }}
+            »
+            {{ if .IsCategory }}
+                {{ index .CategoryMap .Category }}
+            {{ else }}
+                {{ .Title }}
+            {{ end }}
         {{ end }}
     </title>
     <style> {{ .CSS }} </style>
@@ -184,9 +187,7 @@ const baseTemplText = `<!doctype html>
             {{ .BlogTitle }}
         </a>
     </div>
-    <div class="card" id="content">
-        {{ template "content" . }}
-    </div>
+    {{ template "content" . }}
 </body>
 </html>
 
@@ -224,8 +225,15 @@ const baseTemplText = `<!doctype html>
 	</ul>
 {{ end }}
 
+{{ define "homepage-content" }}
+    {{ range .Articles }}
+        {{ template "article-content" . }}
+    {{ end }}
+{{ end }}
+
 {{ define "article-content" }}
-	<article class="article">
+<div class="card">
+    <article class="article">
 		<h1>{{ .Title }}</h1>
         <div class="clear"></div>
         <span class="article-meta">
@@ -239,23 +247,19 @@ const baseTemplText = `<!doctype html>
 	<div class="clear"></div>
 	</article>
 	<hr>
-	{{ if .IsHomepage }}
-		<div class="recent">
-			{{ .L10N.RecentTitle }}
-			{{ template "article-list" . }}
-		</div>
-		<hr>
-	{{ end }}
 	<div class="article-category-list">
 		{{ .L10N.CategoryListTitle }}
 		{{ template "category-list" . }}
 	</div>
 	<div class="clear"></div>
+</div>
 {{ end }}
 
 {{ define "category-content" }}
+<div class="card">
 	{{ template "category-list" . }}
 	{{ template "article-list" . }}
+</div>
 {{ end }}
 `
 

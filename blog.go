@@ -70,15 +70,15 @@ func insertNewArticle(as []article, a article, nmax int) []article {
 	return as
 }
 
-func articlesToMetas(as []article, n int) []articleMeta {
-	ams := make([]articleMeta, min(n, len(as)))
+func articlesToDots(b *baseDot, as []article, n int) []homepageArticleDot {
+	ads := make([]homepageArticleDot, min(n, len(as)))
 	for i, a := range as {
 		if i == n {
 			break
 		}
-		ams[i] = a.articleMeta
+		ads[i] = homepageArticleDot(articleDot{b, a})
 	}
-	return ams
+	return ads
 }
 
 func decodeFile(fname string, v interface{}) {

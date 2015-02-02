@@ -57,9 +57,15 @@ func (c *categoryDot) IsCategory() bool {
 	return true
 }
 
+type homepageArticleDot articleDot
+
+func (ha *homepageArticleDot) Root() string {
+	return "."
+}
+
 type homepageDot struct {
-	articleDot
-	Articles []articleMeta
+	*baseDot
+	Articles []homepageArticleDot
 }
 
 func (h *homepageDot) IsHomepage() bool {

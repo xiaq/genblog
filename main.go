@@ -26,6 +26,7 @@ func min(a, b int) int {
 func main() {
 	categoryTmpl := newTemplate("category", baseTemplText, contentIs("category"))
 	articleTmpl := newTemplate("article", baseTemplText, contentIs("article"))
+	homepageTmpl := newTemplate("homepage", baseTemplText, contentIs("homepage"))
 	feedTmpl := newTemplate("feed", feedTemplText)
 
 	if len(os.Args) != 3 {
@@ -76,15 +77,12 @@ func main() {
 			executeToFile(articleTmpl, ad, path.Join(catDir, am.Name+".html"))
 
 			articles = insertNewArticle(articles, a, narticles)
-
-			if homepage.Timestamp < am.Timestamp {
-				homepage.articleDot = *ad
-			}
 		}
 	}
 	// Generate homepage
-	homepage.Articles = articlesToMetas(articles, conf.IndexPosts)
-	executeToFile(articleTmpl, homepage, path.Join(dstDir, "index.html"))
+	homepage.baseDot = base
+	homepage.Articles = articlesToDots(homepage.baseDot, articles, conf.IndexPosts)
+	executeToFile(homepageTmpl, homepage, path.Join(dstDir, "index.html"))
 
 	// Generate feed
 	feedArticles := articles[:min(len(articles), conf.FeedPosts)]
