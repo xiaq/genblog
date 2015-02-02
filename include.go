@@ -41,7 +41,15 @@ input, select { vertical-align: middle; }
 .card {
     background-color: white;
     padding: 24px;
-    margin-top: 10px;
+    margin-top: 16px;
+}
+
+.card.noted {
+    margin-top: 0;
+}
+
+.card-notes {
+    margin-top: 16px;
 }
 
 @media screen and (min-width: 768px) {
@@ -50,10 +58,6 @@ input, select { vertical-align: middle; }
         padding: 48px;
         width: 672px;
         box-shadow: 2px 1px 3px #cccccc;
-    }
-
-    .card.noted {
-        margin-top: 0;
     }
 
     .card-notes {
