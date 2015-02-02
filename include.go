@@ -39,7 +39,7 @@ input, select { vertical-align: middle; }
 }
 
 .card {
-    background-color: white;
+    background-color: #fafaff;
     padding: 24px;
     margin-top: 16px;
 }
@@ -77,7 +77,7 @@ input, select { vertical-align: middle; }
 }
 
 .category-list > li.current {
-    background-color: white;
+    background-color: #fafaff;
 }
 
 .category-list > li+li {
@@ -167,7 +167,7 @@ hr:after {
     top: -0.5em;
     padding: 0 0.25em;
     font-size: 1.1em;
-    background: white;
+    background-color: #fafaff;
 }
 `
 
