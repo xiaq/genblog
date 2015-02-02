@@ -40,16 +40,25 @@ input, select { vertical-align: middle; }
 
 .card {
     background-color: white;
-    padding: 24px 24px 20px 24px;
+    padding: 24px;
     margin-top: 10px;
 }
 
 @media screen and (min-width: 768px) {
     .card {
         margin: 32px auto 20px auto;
-        padding: 48px 48px 40px 48px;
+        padding: 48px;
         width: 672px;
         box-shadow: 2px 1px 3px #cccccc;
+    }
+
+    .card.noted {
+        margin-top: 0;
+    }
+
+    .card-notes {
+        margin: 32px auto 0 auto;
+        width: 672px;
     }
 }
 
@@ -59,11 +68,16 @@ input, select { vertical-align: middle; }
 
 .category-list > li {
     list-style: none;
-    display: inline;
+    display: inline-block;
+    padding: 8px 10px 4px 10px;
 }
 
-.category-list, .article, .article-list {
-    margin-top: 1em;
+.category-list > li.current {
+    background-color: white;
+}
+
+.category-list > li+li {
+    margin-left: 1em;
 }
 
 .nav-link {
@@ -81,11 +95,6 @@ input, select { vertical-align: middle; }
 
 .nav-link:hover {
     border-bottom-color: black;
-}
-
-.category-list > li+li:before {
-    content: '· ';
-    color: #888;
 }
 
 .article p {
@@ -134,12 +143,6 @@ input, select { vertical-align: middle; }
 
 .article-meta.header {
     margin-bottom: 0.7em;
-}
-
-/* Category list after an article */
-.article-category-list > .category-list {
-	float: right;
-	margin-top: 0;
 }
 
 .clear, hr {
@@ -197,10 +200,11 @@ const baseTemplText = `<!doctype html>
   {{ $cat := .Category }}
   <ul class="category-list">
     {{ range $info := .Categories }}
-      <li><a href="{{ categoryURL $info.Name }}"
-             class="nav-link {{ if and (is "category") (eq $cat $info.Name) }}current{{ end }}">
+      <li class="{{ if eq $cat $info.Name }}current{{ end }}">
+        <a href="{{ categoryURL $info.Name }}" class="nav-link">
           {{ $info.Title }}
-      </a></li>
+        </a>
+      </li>
     {{ end }}
   </ul>
 {{ end }}
@@ -231,7 +235,10 @@ const baseTemplText = `<!doctype html>
 {{ end }}
 
 {{ define "article-content" }}
-  <div class="card">
+  <div class="card-notes">
+    {{ template "category-list" . }}
+  </div>
+  <div class="card noted">
     <article class="article">
       <h1>
         <a href="{{ articleURL .Category .Name }}" class="nav-link">
@@ -240,27 +247,19 @@ const baseTemplText = `<!doctype html>
       </h1>
       <div class="clear"></div>
       <span class="article-meta header">
-        <a href="{{ categoryURL .Category }}" class="nav-link">
-          {{ index .CategoryMap .Category }}
-        </a>
-        ·
-        {{ .Timestamp }}</span>
+        {{ index .CategoryMap .Category }} · {{ .Timestamp }}</span>
       <div class="clear"></div>
       {{ .Content }}
       <div class="clear"></div>
     </article>
-    <hr>
-    <div class="article-category-list">
-      {{ .L10N.CategoryListTitle }}
-      {{ template "category-list" . }}
-    </div>
-    <div class="clear"></div>
   </div>
 {{ end }}
 
 {{ define "category-content" }}
-  <div class="card">
+  <div class="card-notes">
     {{ template "category-list" . }}
+  </div>
+  <div class="card noted">
     {{ template "article-list" . }}
   </div>
 {{ end }}

@@ -6,16 +6,25 @@ body {
 
 .card {
     background-color: white;
-    padding: 24px 24px 20px 24px;
+    padding: 24px;
     margin-top: 10px;
 }
 
 @media screen and (min-width: 768px) {
     .card {
         margin: 32px auto 20px auto;
-        padding: 48px 48px 40px 48px;
+        padding: 48px;
         width: 672px;
         box-shadow: 2px 1px 3px #cccccc;
+    }
+
+    .card.noted {
+        margin-top: 0;
+    }
+
+    .card-notes {
+        margin: 32px auto 0 auto;
+        width: 672px;
     }
 }
 
@@ -25,11 +34,16 @@ body {
 
 .category-list > li {
     list-style: none;
-    display: inline;
+    display: inline-block;
+    padding: 8px 10px 4px 10px;
 }
 
-.category-list, .article, .article-list {
-    margin-top: 1em;
+.category-list > li.current {
+    background-color: white;
+}
+
+.category-list > li+li {
+    margin-left: 1em;
 }
 
 .nav-link {
@@ -47,11 +61,6 @@ body {
 
 .nav-link:hover {
     border-bottom-color: black;
-}
-
-.category-list > li+li:before {
-    content: '· ';
-    color: #888;
 }
 
 .article p {
@@ -100,12 +109,6 @@ body {
 
 .article-meta.header {
     margin-bottom: 0.7em;
-}
-
-/* Category list after an article */
-.article-category-list > .category-list {
-	float: right;
-	margin-top: 0;
 }
 
 .clear, hr {
