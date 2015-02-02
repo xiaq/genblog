@@ -22,12 +22,12 @@ body {
     font-size: 2em;
 }
 
-#category-list > li {
+.category-list > li {
     list-style: none;
     display: inline;
 }
 
-#category-list, #article, #article-list {
+.category-list, .article, .article-list {
     margin-top: 1em;
 }
 
@@ -48,18 +48,18 @@ body {
     border-bottom-color: black;
 }
 
-#category-list > li+li:before {
+.category-list > li+li:before {
     content: '· ';
     color: #888;
 }
 
-#article p {
+.article p {
 	line-height: 1.2;
 	margin-bottom: 0.7em;
 }
 
 /* Only use headers up to h3 */
-#article h1, #article h2, #article h3 {
+.article h1, .article h2, .article h3 {
     font-family: Arial, Sans Serif, FZHei-B01, WenQuanYi Micro Hei, SimHei;
     line-height: 1.5;
     margin-top: 0.6em;
@@ -68,25 +68,25 @@ body {
     font-variant: small-caps;
 }
 
-#article h1 {
+.article h1 {
     font-size: 1.4em;
 }
 
-#article h2 {
+.article h2 {
     font-size: 1.2em;
 }
 
-#article h3 {
+.article h3 {
     font-family: inherit;
     font-size: 1em;
     font-weight: bold;
 }
 
-#article ul, #article ol {
+.article ul, .article ol {
     margin-left: 1em;
 }
 
-#article-list > li {
+.article-list > li {
     list-style: square inside;
     padding-bottom: 2px;
     margin-bottom: 0.7em;
@@ -98,7 +98,7 @@ body {
 }
 
 /* Category list after an article */
-#article-category-list > #category-list {
+.article-category-list > .category-list {
 	float: right;
 	margin-top: 0;
 }

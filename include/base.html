@@ -23,7 +23,7 @@
             {{ .BlogTitle }}
         </a>
     </div>
-    <div class="card" id="article">
+    <div class="card" id="content">
         {{ template "content" . }}
     </div>
 </body>
@@ -33,7 +33,7 @@
 	{{ $isCat := .IsCategory }}
 	{{ $cat := .Category }}
 	{{ $root := .Root }}
-	<ul id="category-list">
+	<ul class="category-list">
 		{{ range $info := .Categories }}
 			<li><a href="{{ $root }}/{{ $info.Name }}/index.html"
 				   class="nav-link {{ if and $isCat (eq $cat $info.Name) }}current{{ end }}">
@@ -44,7 +44,7 @@
 {{ end }}
 
 {{ define "article-list" }}
-	<ul id="article-list">
+	<ul class="article-list">
 		{{ $root := .Root }}
         {{ $isCat := .IsCategory }}
         {{ $catMap := .CategoryMap }}
@@ -64,7 +64,7 @@
 {{ end }}
 
 {{ define "article-content" }}
-	<article id="article">
+	<article class="article">
 		<h1>{{ .Title }}</h1>
         <div class="clear"></div>
         <span class="article-meta">
@@ -85,7 +85,7 @@
 		</div>
 		<hr>
 	{{ end }}
-	<div id="article-category-list">
+	<div class="article-category-list">
 		{{ .L10N.CategoryListTitle }}
 		{{ template "category-list" . }}
 	</div>

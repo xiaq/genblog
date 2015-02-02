@@ -56,12 +56,12 @@ input, select { vertical-align: middle; }
     font-size: 2em;
 }
 
-#category-list > li {
+.category-list > li {
     list-style: none;
     display: inline;
 }
 
-#category-list, #article, #article-list {
+.category-list, .article, .article-list {
     margin-top: 1em;
 }
 
@@ -82,18 +82,18 @@ input, select { vertical-align: middle; }
     border-bottom-color: black;
 }
 
-#category-list > li+li:before {
+.category-list > li+li:before {
     content: '· ';
     color: #888;
 }
 
-#article p {
+.article p {
 	line-height: 1.2;
 	margin-bottom: 0.7em;
 }
 
 /* Only use headers up to h3 */
-#article h1, #article h2, #article h3 {
+.article h1, .article h2, .article h3 {
     font-family: Arial, Sans Serif, FZHei-B01, WenQuanYi Micro Hei, SimHei;
     line-height: 1.5;
     margin-top: 0.6em;
@@ -102,25 +102,25 @@ input, select { vertical-align: middle; }
     font-variant: small-caps;
 }
 
-#article h1 {
+.article h1 {
     font-size: 1.4em;
 }
 
-#article h2 {
+.article h2 {
     font-size: 1.2em;
 }
 
-#article h3 {
+.article h3 {
     font-family: inherit;
     font-size: 1em;
     font-weight: bold;
 }
 
-#article ul, #article ol {
+.article ul, .article ol {
     margin-left: 1em;
 }
 
-#article-list > li {
+.article-list > li {
     list-style: square inside;
     padding-bottom: 2px;
     margin-bottom: 0.7em;
@@ -132,7 +132,7 @@ input, select { vertical-align: middle; }
 }
 
 /* Category list after an article */
-#article-category-list > #category-list {
+.article-category-list > .category-list {
 	float: right;
 	margin-top: 0;
 }
@@ -184,7 +184,7 @@ const baseTemplText = `<!doctype html>
             {{ .BlogTitle }}
         </a>
     </div>
-    <div class="card" id="article">
+    <div class="card" id="content">
         {{ template "content" . }}
     </div>
 </body>
@@ -194,7 +194,7 @@ const baseTemplText = `<!doctype html>
 	{{ $isCat := .IsCategory }}
 	{{ $cat := .Category }}
 	{{ $root := .Root }}
-	<ul id="category-list">
+	<ul class="category-list">
 		{{ range $info := .Categories }}
 			<li><a href="{{ $root }}/{{ $info.Name }}/index.html"
 				   class="nav-link {{ if and $isCat (eq $cat $info.Name) }}current{{ end }}">
@@ -205,7 +205,7 @@ const baseTemplText = `<!doctype html>
 {{ end }}
 
 {{ define "article-list" }}
-	<ul id="article-list">
+	<ul class="article-list">
 		{{ $root := .Root }}
         {{ $isCat := .IsCategory }}
         {{ $catMap := .CategoryMap }}
@@ -225,7 +225,7 @@ const baseTemplText = `<!doctype html>
 {{ end }}
 
 {{ define "article-content" }}
-	<article id="article">
+	<article class="article">
 		<h1>{{ .Title }}</h1>
         <div class="clear"></div>
         <span class="article-meta">
@@ -246,7 +246,7 @@ const baseTemplText = `<!doctype html>
 		</div>
 		<hr>
 	{{ end }}
-	<div id="article-category-list">
+	<div class="article-category-list">
 		{{ .L10N.CategoryListTitle }}
 		{{ template "category-list" . }}
 	</div>
