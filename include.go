@@ -174,14 +174,12 @@ const baseTemplText = `<!doctype html>
 	{{ end }}
 
     <title>
-        {{ .BlogTitle }}
-        {{ if not (is "homepage") }}
-            »
-            {{ if is "category" }}
-                {{ index .CategoryMap .Category }}
-            {{ else }}
-                {{ .Title }}
-            {{ end }}
+        {{ if is "homepage" }}
+            {{ .BlogTitle }}
+        {{ else if is "category" }}
+            {{ index .CategoryMap .Category }}
+        {{ else }}
+            {{ .Title }}
         {{ end }}
     </title>
     <style> {{ .CSS }} </style>
