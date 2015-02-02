@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"text/template"
@@ -79,6 +80,12 @@ type rfc3339Time time.Time
 
 func (t rfc3339Time) String() string {
 	return time.Time(t).Format(time.RFC3339)
+}
+
+func contentIs(what string) string {
+	return fmt.Sprintf(
+		`{{ define "content" }} {{ template "%s-content" . }} {{ end }}`,
+		what)
 }
 
 func newTemplate(name string, sources ...string) *template.Template {

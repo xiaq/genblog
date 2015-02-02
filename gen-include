@@ -13,9 +13,5 @@ const css = `i reset.css` + `i blog.css`
 
 const baseTemplText = `i base.html`
 
-const articleTemplText = `i article.html`
-
-const categoryTemplText = `i category.html`
-
 const feedTemplText = `i feed.atom`
 EOF

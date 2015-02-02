@@ -24,8 +24,8 @@ func min(a, b int) int {
 }
 
 func main() {
-	categoryTmpl := newTemplate("category", baseTemplText, categoryTemplText)
-	articleTmpl := newTemplate("article", baseTemplText, articleTemplText)
+	categoryTmpl := newTemplate("category", baseTemplText, contentIs("category"))
+	articleTmpl := newTemplate("article", baseTemplText, contentIs("article"))
 	feedTmpl := newTemplate("feed", feedTemplText)
 
 	if len(os.Args) != 3 {

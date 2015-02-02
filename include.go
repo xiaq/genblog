@@ -223,9 +223,8 @@ const baseTemplText = `<!doctype html>
 		{{ end }}
 	</ul>
 {{ end }}
-`
 
-const articleTemplText = `{{ define "content" }}
+{{ define "article-content" }}
 	<article id="article">
 		<h1>{{ .Title }}</h1>
         <div class="clear"></div>
@@ -253,9 +252,8 @@ const articleTemplText = `{{ define "content" }}
 	</div>
 	<div class="clear"></div>
 {{ end }}
-`
 
-const categoryTemplText = `{{ define "content" }}
+{{ define "category-content" }}
 	{{ template "category-list" . }}
 	{{ template "article-list" . }}
 {{ end }}
