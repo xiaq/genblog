@@ -41,7 +41,7 @@ input, select { vertical-align: middle; }
 .card {
     background-color: white;
     padding: 24px 24px 20px 24px;
-    box-shadow: 2px 1px 3px #cccccc;
+    margin-top: 10px;
 }
 
 @media screen and (min-width: 768px) {
@@ -49,6 +49,7 @@ input, select { vertical-align: middle; }
         margin: 32px auto 20px auto;
         padding: 48px 48px 40px 48px;
         width: 672px;
+        box-shadow: 2px 1px 3px #cccccc;
     }
 }
 
@@ -129,6 +130,10 @@ input, select { vertical-align: middle; }
 .article-meta {
     float: right;
     display: inline-block;
+}
+
+.article-meta.header {
+    margin-bottom: 0.7em;
 }
 
 /* Category list after an article */
