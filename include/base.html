@@ -20,7 +20,7 @@
 </head>
 <body>
     <div class="card" id="header">
-        <a href="{{ root }}/index.html" class="nav-link">
+        <a href="{{ rootURL }}" class="nav-link">
             {{ .BlogTitle }}
         </a>
     </div>
@@ -32,7 +32,7 @@
 	{{ $cat := .Category }}
 	<ul class="category-list">
 		{{ range $info := .Categories }}
-			<li><a href="{{ root }}/{{ $info.Name }}/index.html"
+			<li><a href="{{ categoryURL $info.Name }}"
 				   class="nav-link {{ if and (is "category") (eq $cat $info.Name) }}current{{ end }}">
 				{{ $info.Title }}
 			</a></li>
@@ -45,7 +45,7 @@
         {{ $catMap := .CategoryMap }}
 		{{ range $info := .Articles }}
 			<li>
-				<a href="{{ root }}/{{ $info.Category }}/{{ $info.Name }}.html" class="nav-link">{{ $info.Title }}</a>
+				<a href="{{ articleURL $info.Category $info.Name }}" class="nav-link">{{ $info.Title }}</a>
 				<span class="article-meta">
                 {{ if not (is "category") }}
                     {{ index $catMap $info.Category }} ·
@@ -70,7 +70,7 @@
 		<h1>{{ .Title }}</h1>
         <div class="clear"></div>
         <span class="article-meta header">
-            <a href="{{ root }}/{{ .Category }}/index.html" class="nav-link">
+            <a href="{{ categoryURL .Category }}" class="nav-link">
                 {{ index .CategoryMap .Category }}
             </a>
             ·

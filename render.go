@@ -68,8 +68,16 @@ func contentIs(what string) string {
 
 func newTemplate(name, root string, sources ...string) *template.Template {
 	t := template.New(name).Funcs(template.FuncMap(map[string]interface{}{
-		"root": func() string { return root },
-		"is":   func(s string) bool { return s == name },
+		"is": func(s string) bool { return s == name },
+		"rootURL": func() string {
+			return root + "/index.html"
+		},
+		"categoryURL": func(cat string) string {
+			return root + "/" + cat + "/index.html"
+		},
+		"articleURL": func(cat, article string) string {
+			return root + "/" + cat + "/" + article + ".html"
+		},
 	}))
 	for _, source := range sources {
 		template.Must(t.Parse(source))
