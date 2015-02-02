@@ -209,25 +209,6 @@ const baseTemplText = `<!doctype html>
   </ul>
 {{ end }}
 
-{{ define "article-list" }}
-  <ul class="article-list">
-    {{ $catMap := .CategoryMap }}
-    {{ range $info := .Articles }}
-      <li>
-        <a href="{{ articleURL $info.Category $info.Name }}"
-           class="nav-link">{{ $info.Title }}</a>
-        <span class="article-meta">
-        {{ if not (is "category") }}
-          {{ index $catMap $info.Category }} ·
-        {{ end }}
-        {{ $info.Timestamp }}
-        </span>
-        <div class="clear"></div>
-      </li>
-    {{ end }}
-  </ul>
-{{ end }}
-
 {{ define "homepage-content" }}
   {{ range .Articles }}
     {{ template "article-content" . }}
@@ -261,7 +242,22 @@ const baseTemplText = `<!doctype html>
     {{ template "category-list" . }}
   </div>
   <div class="card noted">
-    {{ template "article-list" . }}
+    <ul class="article-list">
+      {{ $catMap := .CategoryMap }}
+      {{ range $info := .Articles }}
+        <li>
+          <a href="{{ articleURL $info.Category $info.Name }}"
+             class="nav-link">{{ $info.Title }}</a>
+          <span class="article-meta">
+          {{ if not (is "category") }}
+            {{ index $catMap $info.Category }} ·
+          {{ end }}
+          {{ $info.Timestamp }}
+          </span>
+          <div class="clear"></div>
+        </li>
+      {{ end }}
+    </ul>
   </div>
 {{ end }}
 
