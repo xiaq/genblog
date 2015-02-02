@@ -38,10 +38,6 @@ func (b *baseDot) IsHomepage() bool {
 	return false
 }
 
-func (b *baseDot) Root() string {
-	return ".."
-}
-
 type articleDot struct {
 	*baseDot
 	article
@@ -59,10 +55,6 @@ func (c *categoryDot) IsCategory() bool {
 
 type homepageArticleDot articleDot
 
-func (ha *homepageArticleDot) Root() string {
-	return "."
-}
-
 type homepageDot struct {
 	*baseDot
 	Articles []homepageArticleDot
@@ -70,10 +62,6 @@ type homepageDot struct {
 
 func (h *homepageDot) IsHomepage() bool {
 	return true
-}
-
-func (h *homepageDot) Root() string {
-	return "."
 }
 
 type feedDot struct {
@@ -94,8 +82,10 @@ func contentIs(what string) string {
 		what)
 }
 
-func newTemplate(name string, sources ...string) *template.Template {
-	t := template.New(name)
+func newTemplate(name, root string, sources ...string) *template.Template {
+	t := template.New(name).Funcs(template.FuncMap(map[string]interface{}{
+		"root": func() string { return root },
+	}))
 	for _, source := range sources {
 		template.Must(t.Parse(source))
 	}

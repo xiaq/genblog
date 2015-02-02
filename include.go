@@ -183,7 +183,7 @@ const baseTemplText = `<!doctype html>
 </head>
 <body>
     <div class="card" id="header">
-        <a href="{{ .Root }}/index.html" class="nav-link">
+        <a href="{{ root }}/index.html" class="nav-link">
             {{ .BlogTitle }}
         </a>
     </div>
@@ -194,10 +194,9 @@ const baseTemplText = `<!doctype html>
 {{ define "category-list" }}
 	{{ $isCat := .IsCategory }}
 	{{ $cat := .Category }}
-	{{ $root := .Root }}
 	<ul class="category-list">
 		{{ range $info := .Categories }}
-			<li><a href="{{ $root }}/{{ $info.Name }}/index.html"
+			<li><a href="{{ root }}/{{ $info.Name }}/index.html"
 				   class="nav-link {{ if and $isCat (eq $cat $info.Name) }}current{{ end }}">
 				{{ $info.Title }}
 			</a></li>
@@ -207,12 +206,11 @@ const baseTemplText = `<!doctype html>
 
 {{ define "article-list" }}
 	<ul class="article-list">
-		{{ $root := .Root }}
         {{ $isCat := .IsCategory }}
         {{ $catMap := .CategoryMap }}
 		{{ range $info := .Articles }}
 			<li>
-				<a href="{{ $root }}/{{ $info.Category }}/{{ $info.Name }}.html" class="nav-link">{{ $info.Title }}</a> 
+				<a href="{{ root }}/{{ $info.Category }}/{{ $info.Name }}.html" class="nav-link">{{ $info.Title }}</a>
 				<span class="article-meta">
                 {{ if not $isCat }}
                     {{ index $catMap $info.Category }} ·
@@ -236,8 +234,8 @@ const baseTemplText = `<!doctype html>
     <article class="article">
 		<h1>{{ .Title }}</h1>
         <div class="clear"></div>
-        <span class="article-meta">
-            <a href="{{ .Root }}/{{ .Category }}/index.html" class="nav-link">
+        <span class="article-meta header">
+            <a href="{{ root }}/{{ .Category }}/index.html" class="nav-link">
                 {{ index .CategoryMap .Category }}
             </a>
             ·

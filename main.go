@@ -24,10 +24,10 @@ func min(a, b int) int {
 }
 
 func main() {
-	categoryTmpl := newTemplate("category", baseTemplText, contentIs("category"))
-	articleTmpl := newTemplate("article", baseTemplText, contentIs("article"))
-	homepageTmpl := newTemplate("homepage", baseTemplText, contentIs("homepage"))
-	feedTmpl := newTemplate("feed", feedTemplText)
+	categoryTmpl := newTemplate("category", "..", baseTemplText, contentIs("category"))
+	articleTmpl := newTemplate("article", "..", baseTemplText, contentIs("article"))
+	homepageTmpl := newTemplate("homepage", ".", baseTemplText, contentIs("homepage"))
+	feedTmpl := newTemplate("feed", ".", feedTemplText)
 
 	if len(os.Args) != 3 {
 		fmt.Fprintln(os.Stderr, "Usage: genblog <src dir> <dst dir>")
