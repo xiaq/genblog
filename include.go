@@ -233,7 +233,11 @@ const baseTemplText = `<!doctype html>
 {{ define "article-content" }}
 <div class="card">
     <article class="article">
-		<h1>{{ .Title }}</h1>
+		<h1>
+            <a href="{{ articleURL .Category .Name }}" class="nav-link">
+                {{ .Title }}
+            </a>
+        </h1>
         <div class="clear"></div>
         <span class="article-meta header">
             <a href="{{ categoryURL .Category }}" class="nav-link">
