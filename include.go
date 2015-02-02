@@ -169,15 +169,15 @@ const baseTemplText = `<!doctype html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
-	{{ if .IsHomepage }}
+	{{ if is "homepage" }}
 		<link rel="alternate" type="application/atom+xml" href="{{ .RootURL }}/feed.atom">
 	{{ end }}
 
     <title>
         {{ .BlogTitle }}
-        {{ if not .IsHomepage }}
+        {{ if not (is "homepage") }}
             »
-            {{ if .IsCategory }}
+            {{ if is "category" }}
                 {{ index .CategoryMap .Category }}
             {{ else }}
                 {{ .Title }}
@@ -197,12 +197,11 @@ const baseTemplText = `<!doctype html>
 </html>
 
 {{ define "category-list" }}
-	{{ $isCat := .IsCategory }}
 	{{ $cat := .Category }}
 	<ul class="category-list">
 		{{ range $info := .Categories }}
 			<li><a href="{{ root }}/{{ $info.Name }}/index.html"
-				   class="nav-link {{ if and $isCat (eq $cat $info.Name) }}current{{ end }}">
+				   class="nav-link {{ if and (is "category") (eq $cat $info.Name) }}current{{ end }}">
 				{{ $info.Title }}
 			</a></li>
 		{{ end }}
@@ -211,13 +210,12 @@ const baseTemplText = `<!doctype html>
 
 {{ define "article-list" }}
 	<ul class="article-list">
-        {{ $isCat := .IsCategory }}
         {{ $catMap := .CategoryMap }}
 		{{ range $info := .Articles }}
 			<li>
 				<a href="{{ root }}/{{ $info.Category }}/{{ $info.Name }}.html" class="nav-link">{{ $info.Title }}</a>
 				<span class="article-meta">
-                {{ if not $isCat }}
+                {{ if not (is "category") }}
                     {{ index $catMap $info.Category }} ·
                 {{ end }}
                 {{ $info.Timestamp }}
