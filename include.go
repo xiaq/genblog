@@ -33,13 +33,13 @@ hr { display: block; height: 1px; border: 0; border-top: 1px solid #cccccc; marg
 input, select { vertical-align: middle; }
 /* end HTML5 reset */
 ` + `body {
-    background-color: #e5e5e5;
+    background-color: #ededff;
     font-size: 20px;
     font-family: Georgia, Times, Serif, FZShuSong-Z01, SimSun;
 }
 
 .card {
-    background-color: #fafaff;
+    background-color: white;
     padding: 24px;
     margin-top: 16px;
 }
@@ -57,7 +57,7 @@ input, select { vertical-align: middle; }
         margin: 32px auto 20px auto;
         padding: 48px;
         width: 672px;
-        box-shadow: 2px 1px 3px #cccccc;
+        box-shadow: 2px 1px 3px #cce;
     }
 
     .card-notes {
@@ -77,7 +77,7 @@ input, select { vertical-align: middle; }
 }
 
 .category-list > li.current {
-    background-color: #fafaff;
+    background-color: white;
 }
 
 .nav-link {
@@ -163,7 +163,7 @@ hr:after {
     top: -0.5em;
     padding: 0 0.25em;
     font-size: 1.1em;
-    background-color: #fafaff;
+    background-color: white;
 }
 `
 
