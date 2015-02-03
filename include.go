@@ -80,10 +80,6 @@ input, select { vertical-align: middle; }
     background-color: #fafaff;
 }
 
-.category-list > li+li {
-    margin-left: 0.5em;
-}
-
 .nav-link {
     color: black;
     display: inline-block;
