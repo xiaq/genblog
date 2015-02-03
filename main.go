@@ -43,10 +43,7 @@ func main() {
 	decodeFile(path.Join(srcDir, "index.toml"), conf)
 	base := newBaseDot(conf)
 
-	homepage := &homepageDot{}
-
-	narticles := max(conf.IndexPosts, conf.FeedPosts)
-	articles := make([]article, 0, narticles)
+	recentArticles := make([]article, 0, max(conf.IndexPosts, conf.FeedPosts))
 
 	var lastModified time.Time
 
@@ -94,7 +91,7 @@ func main() {
 			executeToFile(articleTmpl, ad, path.Join(catDir, am.Name+".html"))
 
 			allArticleMetas = append(allArticleMetas, a.articleMeta)
-			articles = insertNewArticle(articles, a, narticles)
+			recentArticles = insertNewArticle(recentArticles, a, cap(recentArticles))
 		}
 	}
 	// Generate "all category"
@@ -104,12 +101,13 @@ func main() {
 	}
 
 	// Generate homepage
-	homepage.baseDot = base
-	homepage.Articles = articlesToDots(homepage.baseDot, articles, conf.IndexPosts)
+	homepage := &homepageDot{
+		base, articlesToDots(base, recentArticles, conf.IndexPosts),
+	}
 	executeToFile(homepageTmpl, homepage, path.Join(dstDir, "index.html"))
 
 	// Generate feed
-	feedArticles := articles[:min(len(articles), conf.FeedPosts)]
+	feedArticles := recentArticles[:min(len(recentArticles), conf.FeedPosts)]
 	fd := feedDot{base, feedArticles, rfc3339Time(lastModified)}
 	executeToFile(feedTmpl, fd, path.Join(dstDir, "feed.atom"))
 }
