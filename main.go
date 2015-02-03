@@ -23,6 +23,9 @@ func min(a, b int) int {
 	return b
 }
 
+func renderCategoryIndex() {
+}
+
 func main() {
 	categoryTmpl := newTemplate("category", "..", baseTemplText, contentIs("category"))
 	articleTmpl := newTemplate("article", "..", baseTemplText, contentIs("article"))
@@ -47,19 +50,33 @@ func main() {
 
 	var lastModified time.Time
 
-	for _, cat := range conf.Categories {
-		catConf := readCategoryConf(cat.Name, path.Join(srcDir, cat.Name, "index.toml"))
+	allArticleMetas := []articleMeta{}
 
-		catDir := path.Join(dstDir, cat.Name)
+	renderCategoryIndex := func(name string, articles []articleMeta) string {
 		// Create directory
+		catDir := path.Join(dstDir, name)
 		err := os.MkdirAll(catDir, 0755)
 		if err != nil {
 			log.Fatalln(err)
 		}
 
 		// Generate index
-		cd := &categoryDot{base, cat.Name, catConf.Articles}
+		cd := &categoryDot{base, name, articles}
 		executeToFile(categoryTmpl, cd, path.Join(catDir, "index.html"))
+
+		return catDir
+	}
+
+	hasAllCategory := false
+
+	for _, cat := range conf.Categories {
+		if cat.Name == "-" {
+			hasAllCategory = true
+			continue
+		}
+		catConf := readCategoryConf(cat.Name, path.Join(srcDir, cat.Name, "index.toml"))
+		sortArticleMetas(catConf.Articles)
+		catDir := renderCategoryIndex(cat.Name, catConf.Articles)
 
 		// Generate articles
 		for _, am := range catConf.Articles {
@@ -76,9 +93,16 @@ func main() {
 			ad := &articleDot{base, a}
 			executeToFile(articleTmpl, ad, path.Join(catDir, am.Name+".html"))
 
+			allArticleMetas = append(allArticleMetas, a.articleMeta)
 			articles = insertNewArticle(articles, a, narticles)
 		}
 	}
+	// Generate "all category"
+	if hasAllCategory {
+		sortArticleMetas(allArticleMetas)
+		renderCategoryIndex("-", allArticleMetas)
+	}
+
 	// Generate homepage
 	homepage.baseDot = base
 	homepage.Articles = articlesToDots(homepage.baseDot, articles, conf.IndexPosts)

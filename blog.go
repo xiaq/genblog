@@ -22,8 +22,7 @@ type blogConf struct {
 }
 
 type l10nConf struct {
-	RecentTitle       string
-	CategoryListTitle string
+	AllArticles string
 }
 
 type categoryMeta struct {
