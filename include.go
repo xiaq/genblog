@@ -33,7 +33,7 @@ hr { display: block; height: 1px; border: 0; border-top: 1px solid #cccccc; marg
 input, select { vertical-align: middle; }
 /* end HTML5 reset */
 ` + `body {
-    background-color: #ededff;
+    background-color: #e5e5e5;
     font-size: 20px;
     font-family: Georgia, Times, Serif, FZShuSong-Z01, SimSun;
 }
