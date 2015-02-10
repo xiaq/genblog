@@ -120,10 +120,16 @@ input, select { vertical-align: middle; }
     font-size: 1.2em;
 }
 
+.article h2:before {
+    content: "# ";
+}
+
 .article h3 {
-    font-family: inherit;
     font-size: 1em;
-    font-weight: bold;
+}
+
+.article h3:before {
+    content: "## ";
 }
 
 .article ul, .article ol {
