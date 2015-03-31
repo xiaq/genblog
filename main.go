@@ -23,9 +23,6 @@ func min(a, b int) int {
 	return b
 }
 
-func renderCategoryIndex() {
-}
-
 func main() {
 	categoryTmpl := newTemplate("category", "..", baseTemplText, contentIs("category"))
 	articleTmpl := newTemplate("article", "..", baseTemplText, contentIs("article"))
