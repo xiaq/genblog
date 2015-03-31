@@ -10,6 +10,8 @@ import (
 
 // This file contains functions and types for rendering the blog.
 
+// baseDot is the base for all "dot" structures used as the environment of the
+// HTML template.
 type baseDot struct {
 	BlogTitle  string
 	Author     string
@@ -54,12 +56,15 @@ type feedDot struct {
 	LastModified rfc3339Time
 }
 
+// rfc3339Time wraps time.Time to provide a RFC3339 String() method.
 type rfc3339Time time.Time
 
 func (t rfc3339Time) String() string {
 	return time.Time(t).Format(time.RFC3339)
 }
 
+// contentIs generates a code snippet to fix the free reference "content" in
+// the HTML template.
 func contentIs(what string) string {
 	return fmt.Sprintf(
 		`{{ define "content" }} {{ template "%s-content" . }} {{ end }}`,

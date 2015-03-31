@@ -198,6 +198,11 @@ const baseTemplText = `<!doctype html>
   <div class="card" id="header">
     <a href="{{ homepageURL }}" class="nav-link">{{ .BlogTitle }}</a>
   </div>
+  {# The reference to the "content" template is a free one and has to be fixed
+  elsewhere. For instance, by adding the following code this template will
+  function as the template for articles:
+      {{ define "content" }} {{ template "article-content" . }} {{ end }}
+  Actually this is exactly what contentIs("article") will generate. #}
   {{ template "content" . }}
 </body>
 </html>

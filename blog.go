@@ -11,6 +11,7 @@ import (
 // This file contains functions and types for parsing and manipulating the
 // in-memory representation of the blog.
 
+// blogConf represents the global blog configuration.
 type blogConf struct {
 	Title      string
 	Author     string
@@ -21,19 +22,26 @@ type blogConf struct {
 	L10N       l10nConf
 }
 
+// l10Conf represents the L10N section of the blog configuration.
 type l10nConf struct {
 	AllArticles string
 }
 
+// categoryMeta represents the metadata of a cateogory, found in the global
+// blog configuration.
 type categoryMeta struct {
 	Name  string
 	Title string
 }
 
+// categoryConf represents the configuration of a category. Note that the
+// metadata is found in the global blog configuration and not duplicated here.
 type categoryConf struct {
 	Articles []articleMeta
 }
 
+// articleMeta represents the metadata of an article, found in a category
+// configuration.
 type articleMeta struct {
 	Name      string
 	Title     string
@@ -41,6 +49,8 @@ type articleMeta struct {
 	Timestamp string
 }
 
+// article represents an article, including all information that is needed to
+// render it.
 type article struct {
 	articleMeta
 	Category     string
@@ -80,6 +90,7 @@ func articlesToDots(b *baseDot, as []article, n int) []homepageArticleDot {
 	return ads
 }
 
+// decodeFile decodes the named file in TOML into a pointer.
 func decodeFile(fname string, v interface{}) {
 	_, err := toml.DecodeFile(fname, v)
 	if err != nil {
@@ -87,6 +98,7 @@ func decodeFile(fname string, v interface{}) {
 	}
 }
 
+// readCatetoryConf reads a category configuration file.
 func readCategoryConf(cat, fname string) *categoryConf {
 	conf := &categoryConf{}
 	decodeFile(fname, conf)
@@ -96,6 +108,7 @@ func readCategoryConf(cat, fname string) *categoryConf {
 	return conf
 }
 
+// readAllAndStat retrieves all content of the named file and its stat.
 func readAllAndStat(fname string) ([]byte, os.FileInfo) {
 	file, err := os.Open(fname)
 	if err != nil {
