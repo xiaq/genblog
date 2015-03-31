@@ -43,11 +43,9 @@ type categoryDot struct {
 	Articles []articleMeta
 }
 
-type homepageArticleDot articleDot
-
 type homepageDot struct {
 	*baseDot
-	Articles []homepageArticleDot
+	Articles []articleDot
 }
 
 type feedDot struct {

@@ -79,13 +79,13 @@ func insertNewArticle(as []article, a article, nmax int) []article {
 	return as
 }
 
-func articlesToDots(b *baseDot, as []article, n int) []homepageArticleDot {
-	ads := make([]homepageArticleDot, min(n, len(as)))
+func articlesToDots(b *baseDot, as []article, n int) []articleDot {
+	ads := make([]articleDot, min(n, len(as)))
 	for i, a := range as {
 		if i == n {
 			break
 		}
-		ads[i] = homepageArticleDot(articleDot{b, a})
+		ads[i] = articleDot(articleDot{b, a})
 	}
 	return ads
 }
