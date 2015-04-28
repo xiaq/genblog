@@ -98,8 +98,9 @@ input, select { vertical-align: middle; }
 }
 
 .article p {
-	line-height: 1.2;
-	margin-bottom: 0.7em;
+	line-height: 1.4;
+    margin-top: 0.5em;
+	margin-bottom: 1em;
 }
 
 /* Only use headers up to h3 */
