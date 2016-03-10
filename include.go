@@ -109,6 +109,14 @@ input, select { vertical-align: middle; }
 	margin-bottom: 1em;
 }
 
+.article code {
+    background-color: #f0f0f0;
+    border-radius: 3px;
+    font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font-size: 85%;
+    padding: 0.2em;
+}
+
 /* Only use headers up to h3 */
 .article h1, .article h2, .article h3 {
     /*font-family: Arial, Sans Serif, Microsoft Yahei, FZHei-B01, WenQuanYi Micro Hei, SimHei;*/
@@ -117,6 +125,7 @@ input, select { vertical-align: middle; }
     margin-bottom: 0.6em;
     font-weight: bold;
     font-variant: small-caps;
+    background-color: #f0f0f0;
 }
 
 .article h1 {
