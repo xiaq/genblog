@@ -73,10 +73,10 @@ func newTemplate(name, root string, sources ...string) *template.Template {
 	t := template.New(name).Funcs(template.FuncMap(map[string]interface{}{
 		"is": func(s string) bool { return s == name },
 		"homepageURL": func() string {
-			return root + "/index.html"
+			return root + "/"
 		},
 		"categoryURL": func(cat string) string {
-			return root + "/" + cat + "/index.html"
+			return root + "/" + cat + "/"
 		},
 		"articleURL": func(cat, article string) string {
 			return root + "/" + cat + "/" + article + ".html"
