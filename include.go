@@ -36,7 +36,7 @@ input, select { vertical-align: middle; }
     background-color: #e5e5e5;
     font-size: 15px;
     /*font-family: Georgia, Times, Serif, FZShuSong-Z01, SimSun;*/
-    font-family: Arial, Sans Serif, Microsoft Yahei, FZHei-B01, WenQuanYi Micro Hei, SimHei;
+    font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft Yahei", FZHei-B01, "WenQuanYi Micro Hei", SimHei;
 }
 
 .card {
@@ -70,6 +70,7 @@ input, select { vertical-align: middle; }
 
 .card#header {
     font-size: 2em;
+    font-weight: bold;
 }
 
 .category-list > li {
@@ -80,6 +81,7 @@ input, select { vertical-align: middle; }
 
 .category-list > li.current {
     background-color: white;
+    font-weight: bold;
 }
 
 .nav-link {
@@ -109,11 +111,11 @@ input, select { vertical-align: middle; }
 
 /* Only use headers up to h3 */
 .article h1, .article h2, .article h3 {
-    font-family: Arial, Sans Serif, Microsoft Yahei, FZHei-B01, WenQuanYi Micro Hei, SimHei;
+    /*font-family: Arial, Sans Serif, Microsoft Yahei, FZHei-B01, WenQuanYi Micro Hei, SimHei;*/
     line-height: 1.5;
     margin-top: 0.6em;
     margin-bottom: 0.6em;
-    font-weight: normal;
+    font-weight: bold;
     font-variant: small-caps;
 }
 
