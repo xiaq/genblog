@@ -34,14 +34,14 @@ input, select { vertical-align: middle; }
 /* end HTML5 reset */
 ` + `body {
     background-color: #e5e5e5;
-    font-size: 20px;
+    font-size: 15px;
     font-family: Georgia, Times, Serif, FZShuSong-Z01, SimSun;
 }
 
 .card {
     background-color: white;
     padding: 24px;
-    margin-top: 16px;
+    margin: 16px 6.25% 16px 6.25%;
 }
 
 .card.noted {
@@ -55,8 +55,8 @@ input, select { vertical-align: middle; }
 @media screen and (min-width: 768px) {
     .card {
         margin: 32px auto 20px auto;
-        padding: 48px;
-        width: 672px;
+        padding: 32px 24px;
+        width: 624px;
         box-shadow: 2px 1px 3px #cce;
     }
 
@@ -82,7 +82,9 @@ input, select { vertical-align: middle; }
 
 .nav-link {
     color: black;
-    display: inline-block;
+    /*display: inline-block;*/
+    display: inline;
+    line-height: 1.3em;
     text-decoration: none;
     padding-bottom: 1px;
     margin-bottom: 2px;
