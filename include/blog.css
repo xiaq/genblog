@@ -1,7 +1,8 @@
 body {
     background-color: #e5e5e5;
     font-size: 15px;
-    font-family: Georgia, Times, Serif, FZShuSong-Z01, SimSun;
+    /*font-family: Georgia, Times, Serif, FZShuSong-Z01, SimSun;*/
+    font-family: Arial, Sans Serif, Microsoft Yahei, FZHei-B01, WenQuanYi Micro Hei, SimHei;
 }
 
 .card {
@@ -16,12 +17,13 @@ body {
 
 .card-notes {
     margin-top: 16px;
+    margin-left: 6.25%;
 }
 
 @media screen and (min-width: 768px) {
     .card {
         margin: 32px auto 20px auto;
-        padding: 32px 24px;
+        padding: 24px 24px;
         width: 624px;
         box-shadow: 2px 1px 3px #cce;
     }
@@ -66,14 +68,14 @@ body {
 }
 
 .article p {
-	line-height: 1.4;
+	line-height: 1.6em;
     margin-top: 0.5em;
 	margin-bottom: 1em;
 }
 
 /* Only use headers up to h3 */
 .article h1, .article h2, .article h3 {
-    font-family: Arial, Sans Serif, FZHei-B01, WenQuanYi Micro Hei, SimHei;
+    font-family: Arial, Sans Serif, Microsoft Yahei, FZHei-B01, WenQuanYi Micro Hei, SimHei;
     line-height: 1.5;
     margin-top: 0.6em;
     margin-bottom: 0.6em;
