@@ -33,8 +33,9 @@ hr { display: block; height: 1px; border: 0; border-top: 1px solid #cccccc; marg
 input, select { vertical-align: middle; }
 /* end HTML5 reset */
 ` + `body {
-    background-color: #e5e5e5;
-    font-size: 15px;
+    /*background-color: #e5e5e5;*/
+    background-color: #ddd;
+    font-size: 16px;
     /*font-family: Georgia, Times, Serif, FZShuSong-Z01, SimSun;*/
     font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft Yahei", FZHei-B01, "WenQuanYi Micro Hei", SimHei;
 }
@@ -54,17 +55,17 @@ input, select { vertical-align: middle; }
     margin-left: 6.25%;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 1024px) {
     .card {
         margin: 32px auto 20px auto;
         padding: 24px 24px;
-        width: 624px;
+        width: 848px;
         box-shadow: 2px 1px 3px #cce;
     }
 
     .card-notes {
         margin: 32px auto 0 auto;
-        width: 672px;
+        width: 896px;
     }
 }
 
@@ -103,13 +104,13 @@ input, select { vertical-align: middle; }
     border-bottom-color: black;
 }
 
-.article p {
+.article p, .article pre {
 	line-height: 1.6em;
     margin-top: 0.5em;
 	margin-bottom: 1em;
 }
 
-.article code {
+.article p code, .article pre {
     background-color: #f0f0f0;
     border-radius: 3px;
     font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
@@ -117,12 +118,16 @@ input, select { vertical-align: middle; }
     padding: 0.2em;
 }
 
+.article pre {
+    overflow: auto;
+}
+
 /* Only use headers up to h3 */
 .article h1, .article h2, .article h3 {
     /*font-family: Arial, Sans Serif, Microsoft Yahei, FZHei-B01, WenQuanYi Micro Hei, SimHei;*/
-    line-height: 1.5;
+    line-height: 1.6em;
     margin-top: 0.6em;
-    margin-bottom: 0.6em;
+    margin-bottom: 1em;
     font-weight: bold;
     font-variant: small-caps;
     background-color: #f0f0f0;
