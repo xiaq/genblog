@@ -47,6 +47,7 @@ type articleMeta struct {
 	Title     string
 	Category  string
 	Timestamp string
+	Sticky    bool
 }
 
 // article represents an article, including all information that is needed to
@@ -79,12 +80,9 @@ func insertNewArticle(as []article, a article, nmax int) []article {
 	return as
 }
 
-func articlesToDots(b *baseDot, as []article, n int) []articleDot {
-	ads := make([]articleDot, min(n, len(as)))
+func articlesToDots(b *baseDot, as []article) []articleDot {
+	ads := make([]articleDot, len(as))
 	for i, a := range as {
-		if i == n {
-			break
-		}
 		ads[i] = articleDot(articleDot{b, a})
 	}
 	return ads

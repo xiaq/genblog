@@ -4,10 +4,16 @@ import "sort"
 
 type articleMetas []articleMeta
 
-func (si articleMetas) Len() int           { return len(si) }
-func (si articleMetas) Less(i, j int) bool { return si[i].Timestamp > si[j].Timestamp }
-func (si articleMetas) Swap(i, j int)      { si[i], si[j] = si[j], si[i] }
+func (a articleMetas) Len() int           { return len(a) }
+func (a articleMetas) Less(i, j int) bool { return a[i].Timestamp > a[j].Timestamp }
+func (a articleMetas) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 
-func sortArticleMetas(ams []articleMeta) {
-	sort.Sort(articleMetas(ams))
-}
+func sortArticleMetas(a []articleMeta) { sort.Sort(articleMetas(a)) }
+
+type articles []article
+
+func (a articles) Len() int           { return len(a) }
+func (a articles) Less(i, j int) bool { return a[i].Timestamp > a[j].Timestamp }
+func (a articles) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+
+func sortArticles(a articles) { sort.Sort(articles(a)) }

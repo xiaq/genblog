@@ -40,6 +40,7 @@ func main() {
 	decodeFile(path.Join(srcDir, "index.toml"), conf)
 	base := newBaseDot(conf)
 
+	var stickyArticles []article
 	recentArticles := make([]article, 0, max(conf.IndexPosts, conf.FeedPosts))
 
 	var lastModified time.Time
@@ -83,12 +84,16 @@ func main() {
 
 			a := article{am, cat.Name, string(content), rfc3339Time(modTime)}
 
-			// Generate article
+			// Generate article page.
 			ad := &articleDot{base, a}
 			executeToFile(articleTmpl, ad, path.Join(catDir, am.Name+".html"))
 
 			allArticleMetas = append(allArticleMetas, a.articleMeta)
-			recentArticles = insertNewArticle(recentArticles, a, cap(recentArticles))
+			if a.Sticky {
+				stickyArticles = append(stickyArticles, a)
+			} else {
+				recentArticles = insertNewArticle(recentArticles, a, cap(recentArticles))
+			}
 		}
 	}
 	// Generate "all category"
@@ -98,8 +103,11 @@ func main() {
 	}
 
 	// Generate homepage
+	sortArticles(stickyArticles)
+	stickyArticleDots := articlesToDots(base, stickyArticles)
+	recentArticleDots := articlesToDots(base, recentArticles[:min(len(recentArticles), conf.IndexPosts)])
 	homepage := &homepageDot{
-		base, articlesToDots(base, recentArticles, conf.IndexPosts),
+		base, append(stickyArticleDots, recentArticleDots...),
 	}
 	executeToFile(homepageTmpl, homepage, path.Join(dstDir, "index.html"))
 
