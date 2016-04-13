@@ -130,7 +130,11 @@ input, select { vertical-align: middle; }
     margin-bottom: 1em;
     font-weight: bold;
     font-variant: small-caps;
-    background-color: #f0f0f0;
+    /*background-color: #f0f0f0;*/
+}
+
+.article h2 {
+    border-bottom: 1px solid #aaa;
 }
 
 .article h1 {
