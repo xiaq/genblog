@@ -145,16 +145,8 @@ input, select { vertical-align: middle; }
     font-size: 1.2em;
 }
 
-.article h2:before {
-    content: "# ";
-}
-
 .article h3 {
     font-size: 1em;
-}
-
-.article h3:before {
-    content: "## ";
 }
 
 .article ul, .article ol {
