@@ -110,7 +110,7 @@ input, select { vertical-align: middle; }
 	margin-bottom: 1em;
 }
 
-.article p code, .article pre {
+.article code, .article pre {
     background-color: #f0f0f0;
     border-radius: 3px;
     font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
