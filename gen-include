@@ -1,9 +1,9 @@
 #!/bin/sh
 
 i() {
-	echo -n '`'
+    printf '`'
     cat ./include/$1 | sed 's/`/``/g'
-	echo -n '`'
+    printf '`'
 }
 
 cat > ./include.go <<EOF
