@@ -22,11 +22,11 @@
 </head>
 
 <body>
-  <div class="navbar-container"> <div class="navbar">
-    <div class="blog-title">
+  <div id="navbar-container"> <div id="navbar">
+    <div id="blog-title">
       {{ .BlogTitle }}
     </div>
-    <ul class="category-list">
+    <ul id="category-list">
       {{ $homepageTitle := .HomepageTitle }}
       {{ $curcat := .Category }}
       <li class="{{ if eq $curcat "homepage" }}current{{ end }}">

@@ -7,7 +7,7 @@ body {
     /* font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft Yahei", FZHei-B01, "WenQuanYi Micro Hei", SimHei; */
 }
 
-.blog-title, h1, h2, h3 {
+#blog-title, h1, h2, h3 {
     font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft Yahei", FZHei-B01, "WenQuanYi Micro Hei", SimHei;
 }
 
@@ -18,13 +18,11 @@ body {
     margin: 0;
 }
 
-.navbar-container {
+#navbar-container {
+    top: 0;
+    width: 100%;
     background-color: white;
     border-bottom: 1px solid black;
-}
-
-.navbar {
-    margin: 0;
 }
 
 @media screen and (min-width: 1024px) {
@@ -33,11 +31,11 @@ body {
         margin: 32px auto 20px auto;
         box-shadow: 2px 1px 3px #cce;
     }
-    .navbar-container {
+    #navbar-container {
         border-bottom: 0;
     }
     /* Like .card, with no margin on top or bottom. */
-    .navbar {
+    #navbar {
         width: 1000px;
         margin: 0 auto;
     }
@@ -64,7 +62,7 @@ img {
 
 /* Global header card. */
 
-.blog-title {
+#blog-title {
     padding: 2% 4% 1%;
     font-size: 2em;
     font-weight: bold;
@@ -76,22 +74,22 @@ img {
     background-color: #667;
 }
 
-.category-list {
+#category-list {
     display: block;
     padding: 1.6% 4%;
 }
 
-.category-list > li {
+#category-list > li {
     list-style: none;
     display: inline-block;
     margin: 4px 0;
 }
 
-.category-list > li > .nav-link {
+#category-list > li > .nav-link {
     padding: 4px 10px 4px;
 }
 
-.category-list > li.current > .nav-link {
+#category-list > li.current > .nav-link {
     color: white;
     background-color: black;
 }
