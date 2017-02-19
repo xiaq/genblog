@@ -35,35 +35,32 @@ input, select { vertical-align: middle; }
 ` + `/* Global styling. */
 
 body {
-    background-color: #f0f0f0;
+    font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft Yahei", FZHei-B01, "WenQuanYi Micro Hei", SimHei;
     font-size: 16px;
-    font-family: Georgia, Times, Serif, FZShuSong-Z01, SimSun;
-    /* font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft Yahei", FZHei-B01, "WenQuanYi Micro Hei", SimHei; */
 }
 
 #blog-title, h1, h2, h3 {
-    font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft Yahei", FZHei-B01, "WenQuanYi Micro Hei", SimHei;
+    font-family: Georgia, Times, Serif, FZShuSong-Z01, SimSun;
 }
 
 /* Layout primitives. */
 
 .card {
-    background-color: white;
+    /*background-color: white;*/
     margin: 0;
 }
 
 #navbar-container {
     top: 0;
     width: 100%;
-    background-color: white;
-    border-bottom: 1px solid black;
+    color: white;
+    background-color: #1a1a1a;
 }
 
 @media screen and (min-width: 1024px) {
     .card {
         width: 1024px;
         margin: 32px auto 20px auto;
-        box-shadow: 2px 1px 3px #cce;
     }
     #navbar-container {
         border-bottom: 0;
@@ -82,10 +79,6 @@ body {
     line-height: 1.4em;
 }
 
-.nav-link:hover {
-    background-color: #c0c0c0;
-}
-
 .clear {
     clear: both;
 }
@@ -100,6 +93,7 @@ img {
     padding: 2% 4% 1%;
     font-size: 2em;
     font-weight: bold;
+    color: #f0f0f0;
 }
 
 .card-splitter {
@@ -120,12 +114,17 @@ img {
 }
 
 #category-list > li > .nav-link {
+    color: white;
     padding: 4px 10px 4px;
 }
 
+#category-list > li > .nav-link:hover {
+    background-color: #333;
+}
+
 #category-list > li.current > .nav-link {
-    color: white;
-    background-color: black;
+    color: black;
+    background-color: white;
 }
 
 /* Article content. */
