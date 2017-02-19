@@ -12,32 +12,34 @@ body {
     margin: 16px 6.25% 16px 6.25%;
 }
 
-.card.noted {
-    margin-top: 0;
-}
-
-.card-notes {
-    margin-top: 16px;
-    margin-left: 6.25%;
+.followup.card {
+    margin-top: -14px;
+    padding: 16px 24px;
 }
 
 @media screen and (min-width: 1024px) {
     .card {
         margin: 32px auto 20px auto;
-        padding: 24px 24px;
+        padding: 24px;
         width: 848px;
         box-shadow: 2px 1px 3px #cce;
     }
 
-    .card-notes {
-        margin: 32px auto 0 auto;
-        width: 896px;
+    .followup.card {
+        margin-top: -18px;
+        padding: 16px 24px;
     }
 }
 
-.card#header {
+.blog-title {
     font-size: 2em;
     font-weight: bold;
+}
+
+.card-splitter {
+    height: 1px;
+    width: 100%;
+    background-color: #ddd; /* same as body background */
 }
 
 .category-list > li {
@@ -71,9 +73,9 @@ body {
 }
 
 .article p, .article pre {
-	line-height: 1.6em;
+    line-height: 1.6em;
     margin-top: 0.5em;
-	margin-bottom: 1em;
+    margin-bottom: 1em;
 }
 
 .article code, .article pre {

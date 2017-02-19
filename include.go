@@ -46,32 +46,34 @@ input, select { vertical-align: middle; }
     margin: 16px 6.25% 16px 6.25%;
 }
 
-.card.noted {
-    margin-top: 0;
-}
-
-.card-notes {
-    margin-top: 16px;
-    margin-left: 6.25%;
+.followup.card {
+    margin-top: -14px;
+    padding: 16px 24px;
 }
 
 @media screen and (min-width: 1024px) {
     .card {
         margin: 32px auto 20px auto;
-        padding: 24px 24px;
+        padding: 24px;
         width: 848px;
         box-shadow: 2px 1px 3px #cce;
     }
 
-    .card-notes {
-        margin: 32px auto 0 auto;
-        width: 896px;
+    .followup.card {
+        margin-top: -18px;
+        padding: 16px 24px;
     }
 }
 
-.card#header {
+.blog-title {
     font-size: 2em;
     font-weight: bold;
+}
+
+.card-splitter {
+    height: 1px;
+    width: 100%;
+    background-color: #ddd; /* same as body background */
 }
 
 .category-list > li {
@@ -105,9 +107,9 @@ input, select { vertical-align: middle; }
 }
 
 .article p, .article pre {
-	line-height: 1.6em;
+    line-height: 1.6em;
     margin-top: 0.5em;
-	margin-bottom: 1em;
+    margin-bottom: 1em;
 }
 
 .article code, .article pre {
@@ -212,9 +214,22 @@ const baseTemplText = `<!doctype html>
   <style> {{ .CSS }} </style>
 </head>
 <body>
-  <div class="card" id="header">
-    <a href="{{ homepageURL }}" class="nav-link">{{ .BlogTitle }}</a>
+  <div class="blog-title card">
+    {{ .BlogTitle }}
   </div>
+
+  <div class="followup card">
+    <ul class="category-list">
+      {{ range $info := .Categories }}
+        <li>
+          <a href="{{ categoryURL $info.Name }}" class="nav-link">
+            {{ $info.Title }}
+          </a>
+        </li>
+      {{ end }}
+    </ul>
+  </div>
+
   {{/*
     The reference to "content" is a free one and has to be fixed elsewhere.
     The *-content templates defined below are intended to be used for this.
@@ -250,10 +265,7 @@ const baseTemplText = `<!doctype html>
 {{ end }}
 
 {{ define "article-content" }}
-  <div class="card-notes">
-    {{ template "category-list" . }}
-  </div>
-  <div class="card noted">
+  <div class="card">
     <article class="article">
       <h1>
         <a href="{{ articleURL .Category .Name }}"
@@ -261,9 +273,8 @@ const baseTemplText = `<!doctype html>
           {{ .Title }}
         </a>
       </h1>
-      <div class="clear"></div>
       <span class="article-meta header">
-        {{ index .CategoryMap .Category }} · {{ .Timestamp }}</span>
+        {{ .Timestamp }}</span>
       <div class="clear"></div>
       {{ .Content }}
       <div class="clear"></div>
@@ -272,10 +283,7 @@ const baseTemplText = `<!doctype html>
 {{ end }}
 
 {{ define "category-content" }}
-  <div class="card-notes">
-    {{ template "category-list" . }}
-  </div>
-  <div class="card noted">
+  <div class="card">
     <ul class="article-list">
       {{ $catMap := .CategoryMap }}
       {{ range $info := .Articles }}

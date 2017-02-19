@@ -20,9 +20,22 @@
   <style> {{ .CSS }} </style>
 </head>
 <body>
-  <div class="card" id="header">
-    <a href="{{ homepageURL }}" class="nav-link">{{ .BlogTitle }}</a>
+  <div class="blog-title card">
+    {{ .BlogTitle }}
   </div>
+
+  <div class="followup card">
+    <ul class="category-list">
+      {{ range $info := .Categories }}
+        <li>
+          <a href="{{ categoryURL $info.Name }}" class="nav-link">
+            {{ $info.Title }}
+          </a>
+        </li>
+      {{ end }}
+    </ul>
+  </div>
+
   {{/*
     The reference to "content" is a free one and has to be fixed elsewhere.
     The *-content templates defined below are intended to be used for this.
@@ -58,10 +71,7 @@
 {{ end }}
 
 {{ define "article-content" }}
-  <div class="card-notes">
-    {{ template "category-list" . }}
-  </div>
-  <div class="card noted">
+  <div class="card">
     <article class="article">
       <h1>
         <a href="{{ articleURL .Category .Name }}"
@@ -69,9 +79,8 @@
           {{ .Title }}
         </a>
       </h1>
-      <div class="clear"></div>
       <span class="article-meta header">
-        {{ index .CategoryMap .Category }} · {{ .Timestamp }}</span>
+        {{ .Timestamp }}</span>
       <div class="clear"></div>
       {{ .Content }}
       <div class="clear"></div>
@@ -80,10 +89,7 @@
 {{ end }}
 
 {{ define "category-content" }}
-  <div class="card-notes">
-    {{ template "category-list" . }}
-  </div>
-  <div class="card noted">
+  <div class="card">
     <ul class="article-list">
       {{ $catMap := .CategoryMap }}
       {{ range $info := .Articles }}
