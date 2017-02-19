@@ -26,7 +26,7 @@ func min(a, b int) int {
 func main() {
 	categoryTmpl := newTemplate("category", "..", baseTemplText, contentIs("category"))
 	articleTmpl := newTemplate("article", "..", baseTemplText, contentIs("article"))
-	homepageTmpl := newTemplate("homepage", ".", baseTemplText, contentIs("homepage"))
+	homepageTmpl := newTemplate("homepage", ".", baseTemplText, contentIs("article"))
 	feedTmpl := newTemplate("feed", ".", feedTemplText)
 
 	if len(os.Args) != 3 {
@@ -40,8 +40,7 @@ func main() {
 	decodeFile(path.Join(srcDir, "index.toml"), conf)
 	base := newBaseDot(conf)
 
-	var stickyArticles []article
-	recentArticles := make([]article, 0, max(conf.IndexPosts, conf.FeedPosts))
+	recents := recentArticles{nil, conf.FeedPosts}
 
 	var lastModified time.Time
 
@@ -52,7 +51,7 @@ func main() {
 		catDir := path.Join(dstDir, name)
 		err := os.MkdirAll(catDir, 0755)
 		if err != nil {
-			log.Fatalln(err)
+			log.Fatal(err)
 		}
 
 		// Generate index
@@ -65,7 +64,7 @@ func main() {
 	hasAllCategory := false
 
 	for _, cat := range conf.Categories {
-		if cat.Name == "-" {
+		if cat.Name == "all" {
 			hasAllCategory = true
 			continue
 		}
@@ -82,37 +81,31 @@ func main() {
 				lastModified = modTime
 			}
 
-			a := article{am, cat.Name, string(content), rfc3339Time(modTime)}
+			a := article{am, false, cat.Name, string(content), rfc3339Time(modTime)}
 
 			// Generate article page.
 			ad := &articleDot{base, a}
 			executeToFile(articleTmpl, ad, path.Join(catDir, am.Name+".html"))
 
 			allArticleMetas = append(allArticleMetas, a.articleMeta)
-			if a.Sticky {
-				stickyArticles = append(stickyArticles, a)
-			} else {
-				recentArticles = insertNewArticle(recentArticles, a, cap(recentArticles))
-			}
+			recents.insert(a)
 		}
 	}
 	// Generate "all category"
 	if hasAllCategory {
 		sortArticleMetas(allArticleMetas)
-		renderCategoryIndex("-", allArticleMetas)
+		renderCategoryIndex("all", allArticleMetas)
 	}
 
-	// Generate homepage
-	sortArticles(stickyArticles)
-	stickyArticleDots := articlesToDots(base, stickyArticles)
-	recentArticleDots := articlesToDots(base, recentArticles[:min(len(recentArticles), conf.IndexPosts)])
-	homepage := &homepageDot{
-		base, append(stickyArticleDots, recentArticleDots...),
-	}
-	executeToFile(homepageTmpl, homepage, path.Join(dstDir, "index.html"))
+	// Generate index page. XXX(xiaq): duplicated code.
+	content, fi := readAllAndStat(path.Join(srcDir, conf.Index.Name+".html"))
+	modTime := fi.ModTime()
+	a := article{conf.Index, true, "homepage", string(content), rfc3339Time(modTime)}
+	ad := &articleDot{base, a}
+	executeToFile(homepageTmpl, ad, path.Join(dstDir, "index.html"))
 
 	// Generate feed
-	feedArticles := recentArticles[:min(len(recentArticles), conf.FeedPosts)]
+	feedArticles := recents.articles
 	fd := feedDot{base, feedArticles, rfc3339Time(lastModified)}
 	executeToFile(feedTmpl, fd, path.Join(dstDir, "feed.atom"))
 }

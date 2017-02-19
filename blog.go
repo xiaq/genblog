@@ -16,15 +16,10 @@ type blogConf struct {
 	Title      string
 	Author     string
 	Categories []categoryMeta
+	Index      articleMeta
 	IndexPosts int
 	FeedPosts  int
 	RootURL    string
-	L10N       l10nConf
-}
-
-// l10Conf represents the L10N section of the blog configuration.
-type l10nConf struct {
-	AllArticles string
 }
 
 // categoryMeta represents the metadata of a cateogory, found in the global
@@ -45,39 +40,46 @@ type categoryConf struct {
 type articleMeta struct {
 	Name      string
 	Title     string
-	Category  string
 	Timestamp string
-	Sticky    bool
 }
 
 // article represents an article, including all information that is needed to
 // render it.
 type article struct {
 	articleMeta
+	IsHomepage   bool
 	Category     string
 	Content      string
 	LastModified rfc3339Time
 }
 
-func insertNewArticle(as []article, a article, nmax int) []article {
+type recentArticles struct {
+	articles []article
+	max      int
+}
+
+func (ra *recentArticles) insert(a article) {
+	// Find a place to insert.
 	var i int
-	for i = len(as); i > 0; i-- {
-		if as[i-1].Timestamp > a.Timestamp {
+	for i = len(ra.articles); i > 0; i-- {
+		if ra.articles[i-1].Timestamp > a.Timestamp {
 			break
 		}
 	}
-	if i == len(as) {
-		if i < nmax {
-			as = append(as, a)
+	// If we are at the end, insert only if we haven't reached the maximum
+	// number of articles.
+	if i == len(ra.articles) {
+		if i < ra.max {
+			ra.articles = append(ra.articles, a)
 		}
-		return as
+		return
 	}
-	if len(as) < nmax {
-		as = append(as, article{})
+	// If not, make space and insert.
+	if len(ra.articles) < ra.max {
+		ra.articles = append(ra.articles, article{})
 	}
-	copy(as[i+1:], as[i:])
-	as[i] = a
-	return as
+	copy(ra.articles[i+1:], ra.articles[i:])
+	ra.articles[i] = a
 }
 
 func articlesToDots(b *baseDot, as []article) []articleDot {
@@ -100,9 +102,6 @@ func decodeFile(fname string, v interface{}) {
 func readCategoryConf(cat, fname string) *categoryConf {
 	conf := &categoryConf{}
 	decodeFile(fname, conf)
-	for i := range conf.Articles {
-		conf.Articles[i].Category = cat
-	}
 	return conf
 }
 

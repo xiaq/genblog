@@ -13,19 +13,19 @@ import (
 // baseDot is the base for all "dot" structures used as the environment of the
 // HTML template.
 type baseDot struct {
-	BlogTitle  string
-	Author     string
-	RootURL    string
-	L10N       *l10nConf
-	Categories []categoryMeta
+	BlogTitle     string
+	Author        string
+	RootURL       string
+	HomepageTitle string
+	Categories    []categoryMeta
 
 	CategoryMap map[string]string
 	CSS         string
 }
 
 func newBaseDot(bc *blogConf) *baseDot {
-	b := &baseDot{bc.Title, bc.Author, bc.RootURL, &bc.L10N,
-		bc.Categories, make(map[string]string), css}
+	b := &baseDot{bc.Title, bc.Author, bc.RootURL,
+		bc.Index.Title, bc.Categories, make(map[string]string), css}
 	for _, m := range bc.Categories {
 		b.CategoryMap[m.Name] = m.Title
 	}
@@ -71,16 +71,8 @@ func contentIs(what string) string {
 
 func newTemplate(name, root string, sources ...string) *template.Template {
 	t := template.New(name).Funcs(template.FuncMap(map[string]interface{}{
-		"is": func(s string) bool { return s == name },
-		"homepageURL": func() string {
-			return root + "/"
-		},
-		"categoryURL": func(cat string) string {
-			return root + "/" + cat + "/"
-		},
-		"articleURL": func(cat, article string) string {
-			return root + "/" + cat + "/" + article + ".html"
-		},
+		"is":      func(s string) bool { return s == name },
+		"rootURL": func() string { return root },
 	}))
 	for _, source := range sources {
 		template.Must(t.Parse(source))
@@ -95,11 +87,11 @@ func openForWrite(fname string) (*os.File, error) {
 func executeToFile(t *template.Template, data interface{}, fname string) {
 	file, err := openForWrite(fname)
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatal(err)
 	}
 	defer file.Close()
 	err = t.Execute(file, data)
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatalf("rendering %q: %s", fname, err)
 	}
 }

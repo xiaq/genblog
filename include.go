@@ -40,30 +40,36 @@ input, select { vertical-align: middle; }
     font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft Yahei", FZHei-B01, "WenQuanYi Micro Hei", SimHei;
 }
 
+/* Layout primitives. */
+
 .card {
     background-color: white;
-    /* padding: 24px; */
     margin: 16px 6.25% 16px 6.25%;
-}
-
-.followup.card {
-    margin-top: -15px;
-    padding-top: 16px;
 }
 
 @media screen and (min-width: 1024px) {
     .card {
         margin: 32px auto 20px auto;
-        /* padding: 40px; */
         width: 816px;
         box-shadow: 2px 1px 3px #cce;
     }
-
-    .followup.card {
-        margin-top: -19px;
-        padding-top: 16px;
-    }
 }
+
+.nav-link {
+    color: black;
+    display: inline;
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    background-color: #c0c0c0;
+}
+
+.clear {
+    clear: both;
+}
+
+/* Global header card. */
 
 .blog-title {
     padding: 24px 40px;
@@ -79,38 +85,24 @@ input, select { vertical-align: middle; }
 
 .category-list {
     display: block;
-    padding: 12px 40px 16px;
+    padding: 24px 40px;
 }
 
 .category-list > li {
     list-style: none;
     display: inline-block;
-    padding: 8px 10px 4px 10px;
 }
 
-.category-list > li.current {
-    background-color: white;
-    font-weight: bold;
+.category-list > li > .nav-link {
+    padding: 4px 10px 4px;
 }
 
-.nav-link {
-    color: black;
-    /*display: inline-block;*/
-    display: inline;
-    line-height: 1.3em;
-    text-decoration: none;
-    padding-bottom: 1px;
-    margin-bottom: 2px;
-    border-bottom: 2px solid #bbb;
+.category-list > li.current > .nav-link {
+    color: white;
+    background-color: black;
 }
 
-.nav-link.current, .nav-link.current:hover {
-    border-bottom-color: black;
-}
-
-.nav-link:hover {
-    border-bottom-color: black;
-}
+/* Article content. */
 
 .article-header {
     padding: 32px 40px 0;
@@ -146,7 +138,6 @@ input, select { vertical-align: middle; }
     margin-bottom: 1em;
     font-weight: bold;
     font-variant: small-caps;
-    /*background-color: #f0f0f0;*/
 }
 
 .article h2 {
@@ -169,26 +160,34 @@ input, select { vertical-align: middle; }
     margin-left: 1em;
 }
 
-.article-list > li {
-    list-style: square inside;
-    padding-bottom: 2px;
-    margin-bottom: 0.7em;
+/* Category content. */
+
+.article-list {
+    padding: 40px;
 }
 
-.article-meta {
+.article-list > li {
+    list-style: square inside;
+    padding: 4px;
+}
+
+.article-list > li:hover {
+    background-color: #c0c0c0;
+}
+
+.article-list > li > .nav-link {
+    border-bottom: 1px solid black;
+}
+
+.article-timestamp {
     float: right;
     display: inline-block;
 }
 
-.article-meta.header {
-    margin-bottom: 0.7em;
-}
-
-.clear, hr {
-    clear: both;
-}
+/* Utilities usable in articles. */
 
 hr {
+    clear: both;
     border-color: #aaa;
     text-align: center;
 }
@@ -205,10 +204,6 @@ hr:after {
     background-color: white;
 }
 
-hr.no-content:after {
-    content: "";
-}
-
 /* vi: se ts=4 sts=4 sw=4: */
 `
 
@@ -219,7 +214,7 @@ const baseTemplText = `<!doctype html>
   <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
   {{ if is "homepage" }}
     <link rel="alternate" type="application/atom+xml"
-          href="{{ .RootURL }}/feed.atom">
+          href="{{ rootURL }}/feed.atom">
   {{ end }}
 
   <title>
@@ -240,9 +235,16 @@ const baseTemplText = `<!doctype html>
     </div>
     <div class="card-splitter"></div>
     <ul class="category-list">
+      {{ $homepageTitle := .HomepageTitle }}
+      {{ $curcat := .Category }}
       {{ range $info := .Categories }}
-        <li>
-          <a href="{{ categoryURL $info.Name }}" class="nav-link">
+        <li class="{{ if eq $curcat "homepage" }}current{{ end }}">
+          <a href="{{ rootURL }}" class="nav-link">
+            {{ $homepageTitle }}
+          </a>
+        </li>
+        <li class="{{ if eq $curcat $info.Name}}current{{ end }}">
+          <a href="{{ rootURL }}/{{ $info.Name }}" class="nav-link">
             {{ $info.Title }}
           </a>
         </li>
@@ -265,34 +267,17 @@ const baseTemplText = `<!doctype html>
 </body>
 </html>
 
-{{ define "category-list" }}
-  {{ $cat := .Category }}
-  <ul class="category-list">
-    {{ range $info := .Categories }}
-      <li class="{{ if eq $cat $info.Name }}current{{ end }}">
-        <a href="{{ categoryURL $info.Name }}" class="nav-link {{ if and (eq $cat $info.Name) (is "category") }} current {{ end }}">
-          {{ $info.Title }}
-        </a>
-      </li>
-    {{ end }}
-  </ul>
-{{ end }}
-
-{{ define "homepage-content" }}
-  {{ range .Articles }}
-    {{ template "article-content" . }}
-  {{ end }}
-{{ end }}
-
 {{ define "article-content" }}
   <div class="card">
     <article class="article">
-      <div class="article-header">
-        <div class="timestamp"> {{ .Timestamp }} </div>
-        <h1> {{ .Title }} </h1>
-        <div class="clear"></div>
-      </div>
-      <div class="card-splitter"></div>
+      {{ if not .IsHomepage }}
+        <div class="article-header">
+          <div class="timestamp"> {{ .Timestamp }} </div>
+          <h1> {{ .Title }} </h1>
+          <div class="clear"></div>
+        </div>
+        <div class="card-splitter"></div>
+      {{ end }}
       <div class="article-content">
         {{ .Content }}
       </div>
@@ -302,18 +287,15 @@ const baseTemplText = `<!doctype html>
 {{ end }}
 
 {{ define "category-content" }}
+  {{ $category := .Category }}
   <div class="card">
     <ul class="article-list">
-      {{ $catMap := .CategoryMap }}
-      {{ range $info := .Articles }}
+      {{ range $article := .Articles }}
         <li>
-          <a href="{{ articleURL $info.Category $info.Name }}"
-             class="nav-link">{{ $info.Title }}</a>
-          <span class="article-meta">
-          {{ if not (is "category") }}
-            {{ index $catMap $info.Category }} ·
-          {{ end }}
-          {{ $info.Timestamp }}
+          <a href="{{ rootURL }}/{{ $category }}/{{ $article.Name }}.html"
+             class="nav-link">{{ $article.Title }}</a>
+          <span class="article-timestamp">
+            {{ $article.Timestamp }}
           </span>
           <div class="clear"></div>
         </li>

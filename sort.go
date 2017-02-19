@@ -5,9 +5,6 @@ import "sort"
 type articleMetas []articleMeta
 
 func less(m1, m2 articleMeta) bool {
-	if m1.Sticky != m2.Sticky {
-		return m1.Sticky
-	}
 	return m1.Timestamp > m2.Timestamp
 }
 

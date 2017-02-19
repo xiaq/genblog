@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
   {{ if is "homepage" }}
     <link rel="alternate" type="application/atom+xml"
-          href="{{ .RootURL }}/feed.atom">
+          href="{{ rootURL }}/feed.atom">
   {{ end }}
 
   <title>
@@ -26,9 +26,16 @@
     </div>
     <div class="card-splitter"></div>
     <ul class="category-list">
+      {{ $homepageTitle := .HomepageTitle }}
+      {{ $curcat := .Category }}
+      <li class="{{ if eq $curcat "homepage" }}current{{ end }}">
+        <a href="{{ rootURL }}" class="nav-link">
+          {{ $homepageTitle }}
+        </a>
+      </li>
       {{ range $info := .Categories }}
-        <li>
-          <a href="{{ categoryURL $info.Name }}" class="nav-link">
+        <li class="{{ if eq $curcat $info.Name}}current{{ end }}">
+          <a href="{{ rootURL }}/{{ $info.Name }}" class="nav-link">
             {{ $info.Title }}
           </a>
         </li>
@@ -51,34 +58,17 @@
 </body>
 </html>
 
-{{ define "category-list" }}
-  {{ $cat := .Category }}
-  <ul class="category-list">
-    {{ range $info := .Categories }}
-      <li class="{{ if eq $cat $info.Name }}current{{ end }}">
-        <a href="{{ categoryURL $info.Name }}" class="nav-link {{ if and (eq $cat $info.Name) (is "category") }} current {{ end }}">
-          {{ $info.Title }}
-        </a>
-      </li>
-    {{ end }}
-  </ul>
-{{ end }}
-
-{{ define "homepage-content" }}
-  {{ range .Articles }}
-    {{ template "article-content" . }}
-  {{ end }}
-{{ end }}
-
 {{ define "article-content" }}
   <div class="card">
     <article class="article">
-      <div class="article-header">
-        <div class="timestamp"> {{ .Timestamp }} </div>
-        <h1> {{ .Title }} </h1>
-        <div class="clear"></div>
-      </div>
-      <div class="card-splitter"></div>
+      {{ if not .IsHomepage }}
+        <div class="article-header">
+          <div class="timestamp"> {{ .Timestamp }} </div>
+          <h1> {{ .Title }} </h1>
+          <div class="clear"></div>
+        </div>
+        <div class="card-splitter"></div>
+      {{ end }}
       <div class="article-content">
         {{ .Content }}
       </div>
@@ -88,18 +78,15 @@
 {{ end }}
 
 {{ define "category-content" }}
+  {{ $category := .Category }}
   <div class="card">
     <ul class="article-list">
-      {{ $catMap := .CategoryMap }}
-      {{ range $info := .Articles }}
+      {{ range $article := .Articles }}
         <li>
-          <a href="{{ articleURL $info.Category $info.Name }}"
-             class="nav-link">{{ $info.Title }}</a>
-          <span class="article-meta">
-          {{ if not (is "category") }}
-            {{ index $catMap $info.Category }} ·
-          {{ end }}
-          {{ $info.Timestamp }}
+          <a href="{{ rootURL }}/{{ $category }}/{{ $article.Name }}.html"
+             class="nav-link">{{ $article.Title }}</a>
+          <span class="article-timestamp">
+            {{ $article.Timestamp }}
           </span>
           <div class="clear"></div>
         </li>

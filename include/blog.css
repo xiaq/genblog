@@ -6,14 +6,11 @@ body {
     font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft Yahei", FZHei-B01, "WenQuanYi Micro Hei", SimHei;
 }
 
+/* Layout primitives. */
+
 .card {
     background-color: white;
     margin: 16px 6.25% 16px 6.25%;
-}
-
-.followup.card {
-    margin-top: -15px;
-    padding-top: 16px;
 }
 
 @media screen and (min-width: 1024px) {
@@ -22,12 +19,23 @@ body {
         width: 816px;
         box-shadow: 2px 1px 3px #cce;
     }
-
-    .followup.card {
-        margin-top: -19px;
-        padding-top: 16px;
-    }
 }
+
+.nav-link {
+    color: black;
+    display: inline;
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    background-color: #c0c0c0;
+}
+
+.clear {
+    clear: both;
+}
+
+/* Global header card. */
 
 .blog-title {
     padding: 24px 40px;
@@ -43,38 +51,24 @@ body {
 
 .category-list {
     display: block;
-    padding: 12px 40px 16px;
+    padding: 24px 40px;
 }
 
 .category-list > li {
     list-style: none;
     display: inline-block;
-    padding: 8px 10px 4px 10px;
 }
 
-.category-list > li.current {
-    background-color: white;
-    font-weight: bold;
+.category-list > li > .nav-link {
+    padding: 4px 10px 4px;
 }
 
-.nav-link {
-    color: black;
-    /*display: inline-block;*/
-    display: inline;
-    line-height: 1.3em;
-    text-decoration: none;
-    padding-bottom: 1px;
-    margin-bottom: 2px;
-    border-bottom: 2px solid #bbb;
+.category-list > li.current > .nav-link {
+    color: white;
+    background-color: black;
 }
 
-.nav-link.current, .nav-link.current:hover {
-    border-bottom-color: black;
-}
-
-.nav-link:hover {
-    border-bottom-color: black;
-}
+/* Article content. */
 
 .article-header {
     padding: 32px 40px 0;
@@ -110,7 +104,6 @@ body {
     margin-bottom: 1em;
     font-weight: bold;
     font-variant: small-caps;
-    /*background-color: #f0f0f0;*/
 }
 
 .article h2 {
@@ -133,26 +126,34 @@ body {
     margin-left: 1em;
 }
 
-.article-list > li {
-    list-style: square inside;
-    padding-bottom: 2px;
-    margin-bottom: 0.7em;
+/* Category content. */
+
+.article-list {
+    padding: 40px;
 }
 
-.article-meta {
+.article-list > li {
+    list-style: square inside;
+    padding: 4px;
+}
+
+.article-list > li:hover {
+    background-color: #c0c0c0;
+}
+
+.article-list > li > .nav-link {
+    border-bottom: 1px solid black;
+}
+
+.article-timestamp {
     float: right;
     display: inline-block;
 }
 
-.article-meta.header {
-    margin-bottom: 0.7em;
-}
-
-.clear, hr {
-    clear: both;
-}
+/* Utilities usable in articles. */
 
 hr {
+    clear: both;
     border-color: #aaa;
     text-align: center;
 }
@@ -167,10 +168,6 @@ hr:after {
     padding: 0 0.25em;
     font-size: 1.1em;
     background-color: white;
-}
-
-hr.no-content:after {
-    content: "";
 }
 
 /* vi: se ts=4 sts=4 sw=4: */
