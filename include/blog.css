@@ -13,10 +13,10 @@ body {
     margin: 16px 5% 10px 5%;
 }
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 1024px) {
     .card {
         margin: 32px auto 20px auto;
-        width: 900px;
+        width: 1000px;
         box-shadow: 2px 1px 3px #cce;
     }
 }
@@ -25,6 +25,7 @@ body {
     color: black;
     display: inline;
     text-decoration: none;
+    line-height: 1.4em;
 }
 
 .nav-link:hover {
@@ -51,12 +52,13 @@ body {
 
 .category-list {
     display: block;
-    padding: 24px 40px;
+    padding: 16px 40px;
 }
 
 .category-list > li {
     list-style: none;
     display: inline-block;
+    margin: 4px 0;
 }
 
 .category-list > li > .nav-link {
@@ -103,7 +105,6 @@ body {
     margin-top: 0.6em;
     margin-bottom: 1em;
     font-weight: bold;
-    font-variant: small-caps;
 }
 
 .article h2 {

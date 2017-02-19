@@ -47,10 +47,10 @@ input, select { vertical-align: middle; }
     margin: 16px 5% 10px 5%;
 }
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 1024px) {
     .card {
         margin: 32px auto 20px auto;
-        width: 900px;
+        width: 1000px;
         box-shadow: 2px 1px 3px #cce;
     }
 }
@@ -59,6 +59,7 @@ input, select { vertical-align: middle; }
     color: black;
     display: inline;
     text-decoration: none;
+    line-height: 1.4em;
 }
 
 .nav-link:hover {
@@ -85,12 +86,13 @@ input, select { vertical-align: middle; }
 
 .category-list {
     display: block;
-    padding: 24px 40px;
+    padding: 16px 40px;
 }
 
 .category-list > li {
     list-style: none;
     display: inline-block;
+    margin: 4px 0;
 }
 
 .category-list > li > .nav-link {
@@ -137,7 +139,6 @@ input, select { vertical-align: middle; }
     margin-top: 0.6em;
     margin-bottom: 1em;
     font-weight: bold;
-    font-variant: small-caps;
 }
 
 .article h2 {
@@ -216,7 +217,7 @@ const baseTemplText = `<!doctype html>
 <html>
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   {{ if is "homepage" }}
     <link rel="alternate" type="application/atom+xml"
           href="{{ rootURL }}/feed.atom">
