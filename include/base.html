@@ -22,11 +22,10 @@
 </head>
 
 <body>
-  <div class="card">
+  <div class="navbar-container"> <div class="navbar">
     <div class="blog-title">
       {{ .BlogTitle }}
     </div>
-    <div class="card-splitter"></div>
     <ul class="category-list">
       {{ $homepageTitle := .HomepageTitle }}
       {{ $curcat := .Category }}
@@ -43,7 +42,7 @@
         </li>
       {{ end }}
     </ul>
-  </div>
+  </div> </div>
 
   {{/*
     The reference to "content" is a free one and has to be fixed elsewhere.

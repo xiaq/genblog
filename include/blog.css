@@ -1,8 +1,13 @@
+/* Global styling. */
+
 body {
-    /*background-color: #e5e5e5;*/
-    background-color: #ddd;
+    background-color: #f0f0f0;
     font-size: 16px;
-    /*font-family: Georgia, Times, Serif, FZShuSong-Z01, SimSun;*/
+    font-family: Georgia, Times, Serif, FZShuSong-Z01, SimSun;
+    /* font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft Yahei", FZHei-B01, "WenQuanYi Micro Hei", SimHei; */
+}
+
+.blog-title, h1, h2, h3 {
     font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft Yahei", FZHei-B01, "WenQuanYi Micro Hei", SimHei;
 }
 
@@ -10,15 +15,31 @@ body {
 
 .card {
     background-color: white;
-    /* Numbers chosen to match the margins of .card when width = 1024px. */
-    margin: 3.2% 1.2% 2% 1.2%;
-    box-shadow: 2px 1px 3px #cce;
+    margin: 0;
+}
+
+.navbar-container {
+    background-color: white;
+    border-bottom: 1px solid black;
+}
+
+.navbar {
+    margin: 0;
 }
 
 @media screen and (min-width: 1024px) {
     .card {
-        width: 1000px;
+        width: 1024px;
         margin: 32px auto 20px auto;
+        box-shadow: 2px 1px 3px #cce;
+    }
+    .navbar-container {
+        border-bottom: 0;
+    }
+    /* Like .card, with no margin on top or bottom. */
+    .navbar {
+        width: 1000px;
+        margin: 0 auto;
     }
 }
 
@@ -37,11 +58,14 @@ body {
     clear: both;
 }
 
+img {
+    max-width: 100%;
+}
+
 /* Global header card. */
 
 .blog-title {
-    padding: 2.4% 4%;
-    /*padding: 24px 40px;*/
+    padding: 2% 4% 1%;
     font-size: 2em;
     font-weight: bold;
 }

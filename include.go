@@ -32,11 +32,16 @@ table { border-collapse: collapse; border-spacing: 0; }
 hr { display: block; height: 1px; border: 0; border-top: 1px solid #cccccc; margin: 1em 0; padding: 0; }
 input, select { vertical-align: middle; }
 /* end HTML5 reset */
-` + `body {
-    /*background-color: #e5e5e5;*/
-    background-color: #ddd;
+` + `/* Global styling. */
+
+body {
+    background-color: #f0f0f0;
     font-size: 16px;
-    /*font-family: Georgia, Times, Serif, FZShuSong-Z01, SimSun;*/
+    font-family: Georgia, Times, Serif, FZShuSong-Z01, SimSun;
+    /* font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft Yahei", FZHei-B01, "WenQuanYi Micro Hei", SimHei; */
+}
+
+.blog-title, h1, h2, h3 {
     font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft Yahei", FZHei-B01, "WenQuanYi Micro Hei", SimHei;
 }
 
@@ -44,15 +49,31 @@ input, select { vertical-align: middle; }
 
 .card {
     background-color: white;
-    /* Numbers chosen to match the margins of .card when width = 1024px. */
-    margin: 3.2% 1.2% 2% 1.2%;
-    box-shadow: 2px 1px 3px #cce;
+    margin: 0;
+}
+
+.navbar-container {
+    background-color: white;
+    border-bottom: 1px solid black;
+}
+
+.navbar {
+    margin: 0;
 }
 
 @media screen and (min-width: 1024px) {
     .card {
-        width: 1000px;
+        width: 1024px;
         margin: 32px auto 20px auto;
+        box-shadow: 2px 1px 3px #cce;
+    }
+    .navbar-container {
+        border-bottom: 0;
+    }
+    /* Like .card, with no margin on top or bottom. */
+    .navbar {
+        width: 1000px;
+        margin: 0 auto;
     }
 }
 
@@ -71,11 +92,14 @@ input, select { vertical-align: middle; }
     clear: both;
 }
 
+img {
+    max-width: 100%;
+}
+
 /* Global header card. */
 
 .blog-title {
-    padding: 2.4% 4%;
-    /*padding: 24px 40px;*/
+    padding: 2% 4% 1%;
     font-size: 2em;
     font-weight: bold;
 }
@@ -239,11 +263,10 @@ const baseTemplText = `<!doctype html>
 </head>
 
 <body>
-  <div class="card">
+  <div class="navbar-container"> <div class="navbar">
     <div class="blog-title">
       {{ .BlogTitle }}
     </div>
-    <div class="card-splitter"></div>
     <ul class="category-list">
       {{ $homepageTitle := .HomepageTitle }}
       {{ $curcat := .Category }}
@@ -260,7 +283,7 @@ const baseTemplText = `<!doctype html>
         </li>
       {{ end }}
     </ul>
-  </div>
+  </div> </div>
 
   {{/*
     The reference to "content" is a free one and has to be fixed elsewhere.
