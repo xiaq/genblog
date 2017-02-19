@@ -44,14 +44,15 @@ input, select { vertical-align: middle; }
 
 .card {
     background-color: white;
-    margin: 16px 5% 10px 5%;
+    /* Numbers chosen to match the margins of .card when width = 1024px. */
+    margin: 3.2% 1.2% 2% 1.2%;
+    box-shadow: 2px 1px 3px #cce;
 }
 
 @media screen and (min-width: 1024px) {
     .card {
-        margin: 32px auto 20px auto;
         width: 1000px;
-        box-shadow: 2px 1px 3px #cce;
+        margin: 32px auto 20px auto;
     }
 }
 
@@ -73,7 +74,8 @@ input, select { vertical-align: middle; }
 /* Global header card. */
 
 .blog-title {
-    padding: 24px 40px;
+    padding: 2.4% 4%;
+    /*padding: 24px 40px;*/
     font-size: 2em;
     font-weight: bold;
 }
@@ -86,7 +88,7 @@ input, select { vertical-align: middle; }
 
 .category-list {
     display: block;
-    padding: 16px 40px;
+    padding: 1.6% 4%;
 }
 
 .category-list > li {
@@ -107,11 +109,11 @@ input, select { vertical-align: middle; }
 /* Article content. */
 
 .article-header {
-    padding: 32px 40px 0;
+    padding: 3.2% 4% 0;
 }
 
 .article-content {
-    padding: 40px;
+    padding: 4%;
 }
 
 .article p, .article pre {
@@ -164,12 +166,12 @@ input, select { vertical-align: middle; }
 /* Category content. */
 
 .category-prelude {
-    padding: 40px 58px 0;
+    padding: 4% 5.8% 0;
     margin-bottom: -20px;
 }
 
 .article-list {
-    padding: 40px;
+    padding: 4%;
 }
 
 .article-list > li {
