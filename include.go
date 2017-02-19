@@ -60,7 +60,8 @@ body {
 @media screen and (min-width: 1024px) {
     .card {
         width: 1024px;
-        margin: 32px auto 20px auto;
+        margin: 0 auto 0 auto;
+        padding: 32px 0 20px;
     }
     #navbar-container {
         border-bottom: 0;
@@ -93,7 +94,8 @@ img {
     padding: 2% 4% 1%;
     font-size: 2em;
     font-weight: bold;
-    color: #f0f0f0;
+    /* color: #f0f0f0; */
+    color: white;
 }
 
 .card-splitter {
