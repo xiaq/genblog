@@ -20,11 +20,11 @@
   <style> {{ .CSS }} </style>
 </head>
 <body>
-  <div class="blog-title card">
-    {{ .BlogTitle }}
-  </div>
-
-  <div class="followup card">
+  <div class="card">
+    <div class="blog-title">
+      {{ .BlogTitle }}
+    </div>
+    <div class="card-splitter"></div>
     <ul class="category-list">
       {{ range $info := .Categories }}
         <li>
@@ -73,16 +73,15 @@
 {{ define "article-content" }}
   <div class="card">
     <article class="article">
-      <h1>
-        <a href="{{ articleURL .Category .Name }}"
-           class="nav-link {{ if is "article" }} current {{ end }}">
-          {{ .Title }}
-        </a>
-      </h1>
-      <span class="article-meta header">
-        {{ .Timestamp }}</span>
-      <div class="clear"></div>
-      {{ .Content }}
+      <div class="article-header">
+        <div class="timestamp"> {{ .Timestamp }} </div>
+        <h1> {{ .Title }} </h1>
+        <div class="clear"></div>
+      </div>
+      <div class="card-splitter"></div>
+      <div class="article-content">
+        {{ .Content }}
+      </div>
       <div class="clear"></div>
     </article>
   </div>

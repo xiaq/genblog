@@ -42,30 +42,31 @@ input, select { vertical-align: middle; }
 
 .card {
     background-color: white;
-    padding: 24px;
+    /* padding: 24px; */
     margin: 16px 6.25% 16px 6.25%;
 }
 
 .followup.card {
-    margin-top: -14px;
-    padding: 16px 24px;
+    margin-top: -15px;
+    padding-top: 16px;
 }
 
 @media screen and (min-width: 1024px) {
     .card {
         margin: 32px auto 20px auto;
-        padding: 24px;
-        width: 848px;
+        /* padding: 40px; */
+        width: 816px;
         box-shadow: 2px 1px 3px #cce;
     }
 
     .followup.card {
-        margin-top: -18px;
-        padding: 16px 24px;
+        margin-top: -19px;
+        padding-top: 16px;
     }
 }
 
 .blog-title {
+    padding: 24px 40px;
     font-size: 2em;
     font-weight: bold;
 }
@@ -73,7 +74,12 @@ input, select { vertical-align: middle; }
 .card-splitter {
     height: 1px;
     width: 100%;
-    background-color: #ddd; /* same as body background */
+    background-color: #667;
+}
+
+.category-list {
+    display: block;
+    padding: 12px 40px 16px;
 }
 
 .category-list > li {
@@ -106,6 +112,14 @@ input, select { vertical-align: middle; }
     border-bottom-color: black;
 }
 
+.article-header {
+    padding: 32px 40px 0;
+}
+
+.article-content {
+    padding: 40px;
+}
+
 .article p, .article pre {
     line-height: 1.6em;
     margin-top: 0.5em;
@@ -136,7 +150,7 @@ input, select { vertical-align: middle; }
 }
 
 .article h2 {
-    border-bottom: 1px solid #aaa;
+    border-bottom: 1px solid #ddd;
 }
 
 .article h1 {
@@ -190,6 +204,12 @@ hr:after {
     font-size: 1.1em;
     background-color: white;
 }
+
+hr.no-content:after {
+    content: "";
+}
+
+/* vi: se ts=4 sts=4 sw=4: */
 `
 
 const baseTemplText = `<!doctype html>
@@ -214,11 +234,11 @@ const baseTemplText = `<!doctype html>
   <style> {{ .CSS }} </style>
 </head>
 <body>
-  <div class="blog-title card">
-    {{ .BlogTitle }}
-  </div>
-
-  <div class="followup card">
+  <div class="card">
+    <div class="blog-title">
+      {{ .BlogTitle }}
+    </div>
+    <div class="card-splitter"></div>
     <ul class="category-list">
       {{ range $info := .Categories }}
         <li>
@@ -267,16 +287,15 @@ const baseTemplText = `<!doctype html>
 {{ define "article-content" }}
   <div class="card">
     <article class="article">
-      <h1>
-        <a href="{{ articleURL .Category .Name }}"
-           class="nav-link {{ if is "article" }} current {{ end }}">
-          {{ .Title }}
-        </a>
-      </h1>
-      <span class="article-meta header">
-        {{ .Timestamp }}</span>
-      <div class="clear"></div>
-      {{ .Content }}
+      <div class="article-header">
+        <div class="timestamp"> {{ .Timestamp }} </div>
+        <h1> {{ .Title }} </h1>
+        <div class="clear"></div>
+      </div>
+      <div class="card-splitter"></div>
+      <div class="article-content">
+        {{ .Content }}
+      </div>
       <div class="clear"></div>
     </article>
   </div>

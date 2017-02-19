@@ -8,30 +8,29 @@ body {
 
 .card {
     background-color: white;
-    padding: 24px;
     margin: 16px 6.25% 16px 6.25%;
 }
 
 .followup.card {
-    margin-top: -14px;
-    padding: 16px 24px;
+    margin-top: -15px;
+    padding-top: 16px;
 }
 
 @media screen and (min-width: 1024px) {
     .card {
         margin: 32px auto 20px auto;
-        padding: 24px;
-        width: 848px;
+        width: 816px;
         box-shadow: 2px 1px 3px #cce;
     }
 
     .followup.card {
-        margin-top: -18px;
-        padding: 16px 24px;
+        margin-top: -19px;
+        padding-top: 16px;
     }
 }
 
 .blog-title {
+    padding: 24px 40px;
     font-size: 2em;
     font-weight: bold;
 }
@@ -39,7 +38,12 @@ body {
 .card-splitter {
     height: 1px;
     width: 100%;
-    background-color: #ddd; /* same as body background */
+    background-color: #667;
+}
+
+.category-list {
+    display: block;
+    padding: 12px 40px 16px;
 }
 
 .category-list > li {
@@ -72,6 +76,14 @@ body {
     border-bottom-color: black;
 }
 
+.article-header {
+    padding: 32px 40px 0;
+}
+
+.article-content {
+    padding: 40px;
+}
+
 .article p, .article pre {
     line-height: 1.6em;
     margin-top: 0.5em;
@@ -102,7 +114,7 @@ body {
 }
 
 .article h2 {
-    border-bottom: 1px solid #aaa;
+    border-bottom: 1px solid #ddd;
 }
 
 .article h1 {
@@ -156,3 +168,9 @@ hr:after {
     font-size: 1.1em;
     background-color: white;
 }
+
+hr.no-content:after {
+    content: "";
+}
+
+/* vi: se ts=4 sts=4 sw=4: */
