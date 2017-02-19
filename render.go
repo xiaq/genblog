@@ -40,6 +40,7 @@ type articleDot struct {
 type categoryDot struct {
 	*baseDot
 	Category string
+	Prelude  string
 	Articles []articleMeta
 }
 

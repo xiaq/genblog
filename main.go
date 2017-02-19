@@ -46,7 +46,7 @@ func main() {
 
 	allArticleMetas := []articleMeta{}
 
-	renderCategoryIndex := func(name string, articles []articleMeta) string {
+	renderCategoryIndex := func(name, prelude string, articles []articleMeta) string {
 		// Create directory
 		catDir := path.Join(dstDir, name)
 		err := os.MkdirAll(catDir, 0755)
@@ -55,7 +55,7 @@ func main() {
 		}
 
 		// Generate index
-		cd := &categoryDot{base, name, articles}
+		cd := &categoryDot{base, name, prelude, articles}
 		executeToFile(categoryTmpl, cd, path.Join(catDir, "index.html"))
 
 		return catDir
@@ -70,7 +70,13 @@ func main() {
 		}
 		catConf := readCategoryConf(cat.Name, path.Join(srcDir, cat.Name, "index.toml"))
 		sortArticleMetas(catConf.Articles)
-		catDir := renderCategoryIndex(cat.Name, catConf.Articles)
+
+		var prelude string
+		if catConf.Prelude != "" {
+			bytes, _ := readAllAndStat(path.Join(srcDir, cat.Name, catConf.Prelude+".html"))
+			prelude = string(bytes)
+		}
+		catDir := renderCategoryIndex(cat.Name, prelude, catConf.Articles)
 
 		// Generate articles
 		for _, am := range catConf.Articles {
@@ -94,7 +100,7 @@ func main() {
 	// Generate "all category"
 	if hasAllCategory {
 		sortArticleMetas(allArticleMetas)
-		renderCategoryIndex("all", allArticleMetas)
+		renderCategoryIndex("all", "", allArticleMetas)
 	}
 
 	// Generate index page. XXX(xiaq): duplicated code.

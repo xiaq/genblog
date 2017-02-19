@@ -17,8 +17,10 @@
       {{ .Title }}
     {{ end }}
   </title>
+
   <style> {{ .CSS }} </style>
 </head>
+
 <body>
   <div class="card">
     <div class="blog-title">
@@ -80,6 +82,13 @@
 {{ define "category-content" }}
   {{ $category := .Category }}
   <div class="card">
+    {{ if ne .Prelude "" }}
+      <div class="category-prelude article">
+        <article class="article">
+          {{ .Prelude }}
+        </article>
+      </div>
+    {{ end }}
     <ul class="article-list">
       {{ range $article := .Articles }}
         <li>

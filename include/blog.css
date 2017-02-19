@@ -10,13 +10,13 @@ body {
 
 .card {
     background-color: white;
-    margin: 16px 6.25% 16px 6.25%;
+    margin: 16px 5% 10px 5%;
 }
 
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 1000px) {
     .card {
         margin: 32px auto 20px auto;
-        width: 816px;
+        width: 900px;
         box-shadow: 2px 1px 3px #cce;
     }
 }
@@ -127,6 +127,11 @@ body {
 }
 
 /* Category content. */
+
+.category-prelude {
+    padding: 40px 58px 0;
+    margin-bottom: -20px;
+}
 
 .article-list {
     padding: 40px;

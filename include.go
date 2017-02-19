@@ -44,13 +44,13 @@ input, select { vertical-align: middle; }
 
 .card {
     background-color: white;
-    margin: 16px 6.25% 16px 6.25%;
+    margin: 16px 5% 10px 5%;
 }
 
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 1000px) {
     .card {
         margin: 32px auto 20px auto;
-        width: 816px;
+        width: 900px;
         box-shadow: 2px 1px 3px #cce;
     }
 }
@@ -162,6 +162,11 @@ input, select { vertical-align: middle; }
 
 /* Category content. */
 
+.category-prelude {
+    padding: 40px 58px 0;
+    margin-bottom: -20px;
+}
+
 .article-list {
     padding: 40px;
 }
@@ -226,8 +231,10 @@ const baseTemplText = `<!doctype html>
       {{ .Title }}
     {{ end }}
   </title>
+
   <style> {{ .CSS }} </style>
 </head>
+
 <body>
   <div class="card">
     <div class="blog-title">
@@ -237,12 +244,12 @@ const baseTemplText = `<!doctype html>
     <ul class="category-list">
       {{ $homepageTitle := .HomepageTitle }}
       {{ $curcat := .Category }}
+      <li class="{{ if eq $curcat "homepage" }}current{{ end }}">
+        <a href="{{ rootURL }}" class="nav-link">
+          {{ $homepageTitle }}
+        </a>
+      </li>
       {{ range $info := .Categories }}
-        <li class="{{ if eq $curcat "homepage" }}current{{ end }}">
-          <a href="{{ rootURL }}" class="nav-link">
-            {{ $homepageTitle }}
-          </a>
-        </li>
         <li class="{{ if eq $curcat $info.Name}}current{{ end }}">
           <a href="{{ rootURL }}/{{ $info.Name }}" class="nav-link">
             {{ $info.Title }}
@@ -289,6 +296,13 @@ const baseTemplText = `<!doctype html>
 {{ define "category-content" }}
   {{ $category := .Category }}
   <div class="card">
+    {{ if ne .Prelude "" }}
+      <div class="category-prelude article">
+        <article class="article">
+          {{ .Prelude }}
+        </article>
+      </div>
+    {{ end }}
     <ul class="article-list">
       {{ range $article := .Articles }}
         <li>
