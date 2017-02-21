@@ -1,20 +1,18 @@
 /* Global styling. */
 
 body {
+    background-color: #eee;
     font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft Yahei", FZHei-B01, "WenQuanYi Micro Hei", SimHei;
     font-size: 16px;
 }
 
+/*
 #blog-title, h1, h2, h3 {
     font-family: Georgia, Times, Serif, FZShuSong-Z01, SimSun;
 }
+*/
 
 /* Layout primitives. */
-
-.card {
-    /*background-color: white;*/
-    margin: 0;
-}
 
 #navbar-container {
     top: 0;
@@ -23,19 +21,26 @@ body {
     background-color: #1a1a1a;
 }
 
-@media screen and (min-width: 1024px) {
-    .card {
-        width: 1024px;
-        margin: 0 auto 0 auto;
-        padding: 32px 0 20px;
-    }
+.card {
+    background-color: white;
+}
+
+.card, #navbar {
+    margin: 0 auto;
+    max-width: 1024px;
+}
+
+/* When the navbar fits within one line, make it fixed.
+ * 700px is pretty pessimistic here.
+ */
+@media screen and (min-width: 700px) {
     #navbar-container {
-        border-bottom: 0;
+        position: fixed;
+        z-index: 100;
     }
-    /* Like .card, with no margin on top or bottom. */
-    #navbar {
-        width: 1000px;
-        margin: 0 auto;
+    .card {
+        position: relative;
+        top: 64px;
     }
 }
 
@@ -56,12 +61,16 @@ img {
 
 /* Global header card. */
 
+#navbar {
+    padding-bottom: 16px;
+}
+
 #blog-title {
-    padding: 2% 4% 1%;
+    margin: 16px 2% 0 4%;
     font-size: 2em;
-    font-weight: bold;
-    /* color: #f0f0f0; */
     color: white;
+    display: inline-block;
+    /*float: left;*/
 }
 
 .card-splitter {
@@ -71,18 +80,21 @@ img {
 }
 
 #category-list {
-    display: block;
-    padding: 1.6% 4%;
+    /*display: block;*/
+    display: inline-block;
+    /* float: left; */
+    margin: 20px 0 0 2%;
 }
 
 #category-list > li {
     list-style: none;
     display: inline-block;
-    margin: 4px 0;
 }
 
 #category-list > li > .nav-link {
     color: white;
+    position: relative;
+    top: -4px; /* Cancel padding-bottom to align with baseline. */
     padding: 4px 10px 4px;
 }
 
@@ -98,17 +110,44 @@ img {
 /* Article content. */
 
 .article-header {
-    padding: 3.2% 4% 0;
+    padding: 2.4% 4% 1.6%;
 }
 
 .article-content {
     padding: 4%;
 }
 
-.article p, .article pre {
-    line-height: 1.6em;
+.article p, .article ul, .article pre {
+    margin-bottom: 16px;
+}
+
+.article p {
+    line-height: 1.5;
+}
+
+.article li {
     margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.article li > p {
+    margin-top: 1em;
     margin-bottom: 1em;
+}
+
+.article pre {
+    padding: 1em;
+    line-height: 1.45;
+    overflow: auto;
+}
+
+.article code {
+    padding: 0.2em 0;
+}
+
+.article code::before {
+    letter-spacing: -0.2em;
+    content: "\00a0";
 }
 
 .article code, .article pre {
@@ -116,36 +155,34 @@ img {
     border-radius: 3px;
     font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
     font-size: 85%;
-    padding: 0.2em;
-}
-
-.article pre {
-    overflow: auto;
 }
 
 /* Only use headers up to h3 */
 .article h1, .article h2, .article h3 {
-    /*font-family: Arial, Sans Serif, Microsoft Yahei, FZHei-B01, WenQuanYi Micro Hei, SimHei;*/
-    line-height: 1.6em;
-    margin-top: 0.6em;
-    margin-bottom: 1em;
-    font-weight: bold;
+    line-height: 1.25;
 }
 
-.article h2 {
-    border-bottom: 1px solid #ddd;
+.article h2, .article h3 {
+    margin-top: 24px;
+    margin-bottom: 16px;
 }
 
 .article h1 {
-    font-size: 1.4em;
+    font-size: 2em;
 }
 
 .article h2 {
-    font-size: 1.2em;
+    font-size: 2em;
+    padding-bottom: 0.3em;
+    border-bottom: 1px solid #eee;
+    font-weight: 600;
 }
 
 .article h3 {
-    font-size: 1em;
+    font-size: 1.5em;
+    padding-bottom: 0.3em;
+    border-bottom: 1px solid #eee;
+    font-weight: 600;
 }
 
 .article ul, .article ol {
