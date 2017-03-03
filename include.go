@@ -35,9 +35,10 @@ input, select { vertical-align: middle; }
 ` + `/* Global styling. */
 
 body {
-    background-color: #eee;
     font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft Yahei", FZHei-B01, "WenQuanYi Micro Hei", SimHei;
     font-size: 16px;
+    color: white;
+    background-color: #000;
 }
 
 /*
@@ -56,7 +57,7 @@ body {
 }
 
 .card {
-    background-color: white;
+    background-color: #000;
 }
 
 .card, #navbar {
@@ -67,6 +68,7 @@ body {
 /* When the navbar fits within one line, make it fixed.
  * 700px is pretty pessimistic here.
  */
+/*
 @media screen and (min-width: 700px) {
     #navbar-container {
         position: fixed;
@@ -77,6 +79,7 @@ body {
         top: 64px;
     }
 }
+*/
 
 .nav-link {
     color: black;
@@ -92,6 +95,16 @@ body {
 img {
     max-width: 100%;
 }
+
+a {
+    color: #6666ff;
+}
+
+/*
+a:visited {
+    color: #ccccff;
+}
+*/
 
 /* Global header card. */
 
@@ -151,6 +164,18 @@ img {
     padding: 4%;
 }
 
+.toc {
+    margin-left: -0.8em;
+}
+
+.toc li {
+    list-style: none;
+}
+
+.toc a {
+    color: black;
+}
+
 .article p, .article ul, .article pre {
     margin-bottom: 16px;
 }
@@ -175,11 +200,11 @@ img {
     overflow: auto;
 }
 
-.article code {
+.article p code {
     padding: 0.2em 0;
 }
 
-.article code::before {
+.article p code::before, .article p code::after {
     letter-spacing: -0.2em;
     content: "\00a0";
 }
@@ -191,28 +216,28 @@ img {
     font-size: 85%;
 }
 
-/* Only use headers up to h3 */
-.article h1, .article h2, .article h3 {
+/* Only use headers up to h2 */
+.article-header h1, .article-content h1, .article-content h2 {
     line-height: 1.25;
 }
 
-.article h2, .article h3 {
+.article-header h1 {
+    font-size: 2em;
+}
+
+.article-content h1, .article-content h2 {
     margin-top: 24px;
     margin-bottom: 16px;
 }
 
-.article h1 {
-    font-size: 2em;
-}
-
-.article h2 {
+.article-content h1 {
     font-size: 2em;
     padding-bottom: 0.3em;
     border-bottom: 1px solid #eee;
     font-weight: 600;
 }
 
-.article h3 {
+.article-content h2 {
     font-size: 1.5em;
     padding-bottom: 0.3em;
     border-bottom: 1px solid #eee;
@@ -262,14 +287,14 @@ hr {
 
 hr:after {
     content: "❧";
-    color: black;
     text-shadow: 0px 0px 2px #667;
     display: inline-block;
     position: relative;
     top: -0.5em;
     padding: 0 0.25em;
     font-size: 1.1em;
-    background-color: white;
+    color: white;
+    background-color: black;
 }
 
 /* vi: se ts=4 sts=4 sw=4: */
