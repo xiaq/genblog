@@ -38,7 +38,7 @@ body {
     font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft Yahei", FZHei-B01, "WenQuanYi Micro Hei", SimHei;
     font-size: 16px;
     color: white;
-    background-color: #000;
+    background-color: black;
 }
 
 /*
@@ -57,7 +57,7 @@ body {
 }
 
 .card {
-    background-color: #000;
+    background-color: black;
 }
 
 .card, #navbar {
@@ -82,7 +82,7 @@ body {
 */
 
 .nav-link {
-    color: black;
+    color: white;
     display: inline;
     text-decoration: none;
     line-height: 1.4em;
@@ -99,12 +99,6 @@ img {
 a {
     color: #6666ff;
 }
-
-/*
-a:visited {
-    color: #ccccff;
-}
-*/
 
 /* Global header card. */
 
@@ -173,7 +167,7 @@ a:visited {
 }
 
 .toc a {
-    color: black;
+    color: white;
 }
 
 .article p, .article ul, .article pre {
@@ -210,7 +204,7 @@ a:visited {
 }
 
 .article code, .article pre {
-    background-color: #f0f0f0;
+    background-color: #1a1a1a;
     border-radius: 3px;
     font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
     font-size: 85%;
@@ -265,11 +259,11 @@ a:visited {
 }
 
 .article-list > li:hover {
-    background-color: #c0c0c0;
+    background-color: #333;
 }
 
 .article-list > li > .nav-link {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid white;
 }
 
 .article-timestamp {
