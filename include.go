@@ -37,7 +37,6 @@ input, select { vertical-align: middle; }
 body {
     font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft Yahei", FZHei-B01, "WenQuanYi Micro Hei", SimHei;
     font-size: 16px;
-    /* color: white; */
     background-color: white;
 }
 
@@ -51,7 +50,9 @@ body {
 
 #navbar-container {
     top: 0;
-    width: 100%;
+    width: 1280px;
+    max-width: 100%;
+    margin: auto;
     color: white;
     background-color: #1a1a1a;
 }
@@ -111,7 +112,6 @@ a {
     font-size: 2em;
     color: white;
     display: inline-block;
-    /*float: left;*/
 }
 
 .card-splitter {
@@ -121,9 +121,7 @@ a {
 }
 
 #category-list {
-    /*display: block;*/
     display: inline-block;
-    /* float: left; */
     margin: 20px 0 0 2%;
 }
 
