@@ -20,6 +20,7 @@ type blogConf struct {
 	IndexPosts int
 	FeedPosts  int
 	RootURL    string
+	Template   string
 }
 
 // categoryMeta represents the metadata of a cateogory, found in the global

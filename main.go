@@ -2,11 +2,17 @@
 package main
 
 import (
+	"flag"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"path"
 	"time"
+)
+
+var (
+	printDefaultTemplate = flag.Bool("print-default-template", false, "Print default template")
 )
 
 func max(a, b int) int {
@@ -24,20 +30,37 @@ func min(a, b int) int {
 }
 
 func main() {
-	categoryTmpl := newTemplate("category", "..", baseTemplText, contentIs("category"))
-	articleTmpl := newTemplate("article", "..", baseTemplText, contentIs("article"))
-	homepageTmpl := newTemplate("homepage", ".", baseTemplText, contentIs("article"))
-	feedTmpl := newTemplate("feed", ".", feedTemplText)
+	flag.Parse()
+	args := flag.Args()
 
-	if len(os.Args) != 3 {
+	if *printDefaultTemplate {
+		fmt.Print(baseTemplText)
+		return
+	}
+
+	if len(args) != 2 {
 		fmt.Fprintln(os.Stderr, "Usage: genblog <src dir> <dst dir>")
 		os.Exit(1)
 	}
-	srcDir := os.Args[1]
-	dstDir := os.Args[2]
+	srcDir, dstDir := args[0], args[1]
 
 	conf := &blogConf{}
 	decodeFile(path.Join(srcDir, "index.toml"), conf)
+
+	template := baseTemplText
+	if conf.Template != "" {
+		bytes, err := ioutil.ReadFile(path.Join(srcDir, conf.Template))
+		if err != nil {
+			log.Fatal(err)
+		}
+		template = string(bytes)
+	}
+
+	categoryTmpl := newTemplate("category", "..", template, contentIs("category"))
+	articleTmpl := newTemplate("article", "..", template, contentIs("article"))
+	homepageTmpl := newTemplate("homepage", ".", template, contentIs("article"))
+	feedTmpl := newTemplate("feed", ".", feedTemplText)
+
 	base := newBaseDot(conf)
 
 	recents := recentArticles{nil, conf.FeedPosts}
