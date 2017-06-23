@@ -4,7 +4,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path"
@@ -13,6 +12,7 @@ import (
 
 var (
 	printDefaultTemplate = flag.Bool("print-default-template", false, "Print default template")
+	printDefaultCSS      = flag.Bool("print-default-css", false, "Print default CSS")
 )
 
 func max(a, b int) int {
@@ -30,45 +30,61 @@ func min(a, b int) int {
 }
 
 func main() {
+	// Parse flags.
+	flag.Usage = func() {
+		fmt.Fprintln(os.Stderr, "Usage: genblog [options] <src dir> <dst dir>")
+		flag.PrintDefaults()
+	}
 	flag.Parse()
 	args := flag.Args()
-
-	if *printDefaultTemplate {
-		fmt.Print(baseTemplText)
+	switch {
+	case *printDefaultTemplate:
+		fmt.Print(defaultTemplate)
+		return
+	case *printDefaultCSS:
+		fmt.Print(defaultCSS)
 		return
 	}
-
 	if len(args) != 2 {
-		fmt.Fprintln(os.Stderr, "Usage: genblog <src dir> <dst dir>")
+		flag.Usage()
 		os.Exit(1)
 	}
 	srcDir, dstDir := args[0], args[1]
 
+	// Read blog configuration.
 	conf := &blogConf{}
 	decodeFile(path.Join(srcDir, "index.toml"), conf)
-
-	template := baseTemplText
+	template := defaultTemplate
 	if conf.Template != "" {
-		bytes, err := ioutil.ReadFile(path.Join(srcDir, conf.Template))
-		if err != nil {
-			log.Fatal(err)
-		}
-		template = string(bytes)
+		template = readAll(path.Join(srcDir, conf.Template))
+	}
+	css := defaultCSS
+	if conf.CSS != "" {
+		css = readAll(path.Join(srcDir, conf.CSS))
 	}
 
+	// Initialize templates. They are all initialized from the same source code,
+	// plus a snippet to fix the "content" reference.
 	categoryTmpl := newTemplate("category", "..", template, contentIs("category"))
 	articleTmpl := newTemplate("article", "..", template, contentIs("article"))
 	homepageTmpl := newTemplate("homepage", ".", template, contentIs("article"))
 	feedTmpl := newTemplate("feed", ".", feedTemplText)
 
-	base := newBaseDot(conf)
+	// Base for the {{ . }} object used in all templates.
+	base := newBaseDot(conf, css)
 
+	// Up to conf.FeedPosts recent posts, used in the feed.
 	recents := recentArticles{nil, conf.FeedPosts}
-
+	// Last modified time of the newest post, used in the feed.
 	var lastModified time.Time
 
+	// Whether the "all" category has been requested.
+	hasAllCategory := false
+	// Meta of all articles, used to generate the index of the "all", if if is
+	// requested.
 	allArticleMetas := []articleMeta{}
 
+	// Render a category index.
 	renderCategoryIndex := func(name, prelude string, articles []articleMeta) string {
 		// Create directory
 		catDir := path.Join(dstDir, name)
@@ -84,52 +100,58 @@ func main() {
 		return catDir
 	}
 
-	hasAllCategory := false
-
 	for _, cat := range conf.Categories {
 		if cat.Name == "all" {
+			// The "all" category has been requested. It is a pseudo-category in
+			// that it doesn't need to have any associated category
+			// configuration file. We cannot render the category index now
+			// because we haven't seen all articles yet. Render it later.
 			hasAllCategory = true
 			continue
 		}
+
 		catConf := readCategoryConf(cat.Name, path.Join(srcDir, cat.Name, "index.toml"))
 		sortArticleMetas(catConf.Articles)
 
 		var prelude string
 		if catConf.Prelude != "" {
-			bytes, _ := readAllAndStat(path.Join(srcDir, cat.Name, catConf.Prelude+".html"))
-			prelude = string(bytes)
+			prelude = readAll(
+				path.Join(srcDir, cat.Name, catConf.Prelude+".html"))
 		}
-		catDir := renderCategoryIndex(cat.Name, prelude, catConf.Articles)
+		catDstDir := renderCategoryIndex(cat.Name, prelude, catConf.Articles)
 
 		// Generate articles
 		for _, am := range catConf.Articles {
 			// Read article
-			content, fi := readAllAndStat(path.Join(srcDir, cat.Name, am.Name+".html"))
+			content, fi := readAllAndStat(
+				path.Join(srcDir, cat.Name, am.Name+".html"))
 			modTime := fi.ModTime()
 			if modTime.After(lastModified) {
 				lastModified = modTime
 			}
 
-			a := article{am, false, cat.Name, string(content), rfc3339Time(modTime)}
+			a := article{am, false, cat.Name, content, rfc3339Time(modTime)}
 
 			// Generate article page.
 			ad := &articleDot{base, a}
-			executeToFile(articleTmpl, ad, path.Join(catDir, am.Name+".html"))
+			executeToFile(articleTmpl, ad, path.Join(catDstDir, am.Name+".html"))
 
 			allArticleMetas = append(allArticleMetas, a.articleMeta)
 			recents.insert(a)
 		}
 	}
+
 	// Generate "all category"
 	if hasAllCategory {
 		sortArticleMetas(allArticleMetas)
 		renderCategoryIndex("all", "", allArticleMetas)
 	}
 
-	// Generate index page. XXX(xiaq): duplicated code.
+	// Generate index page. XXX(xiaq): duplicated code with generating ordinary
+	// article pages.
 	content, fi := readAllAndStat(path.Join(srcDir, conf.Index.Name+".html"))
 	modTime := fi.ModTime()
-	a := article{conf.Index, true, "homepage", string(content), rfc3339Time(modTime)}
+	a := article{conf.Index, true, "homepage", content, rfc3339Time(modTime)}
 	ad := &articleDot{base, a}
 	executeToFile(homepageTmpl, ad, path.Join(dstDir, "index.html"))
 

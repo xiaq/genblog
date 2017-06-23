@@ -23,7 +23,7 @@ type baseDot struct {
 	CSS         string
 }
 
-func newBaseDot(bc *blogConf) *baseDot {
+func newBaseDot(bc *blogConf, css string) *baseDot {
 	b := &baseDot{bc.Title, bc.Author, bc.RootURL,
 		bc.Index.Title, bc.Categories, make(map[string]string), css}
 	for _, m := range bc.Categories {

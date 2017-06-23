@@ -1,6 +1,6 @@
 package main
 
-const css = `/*
+const defaultCSS = `/*
 Copied from:  http://code.google.com/p/html5resetcss/
 
 html5doctor.com Reset Stylesheet
@@ -297,7 +297,7 @@ hr:after {
 /* vi: se ts=4 sts=4 sw=4: */
 `
 
-const baseTemplText = `<!doctype html>
+const defaultTemplate = `<!doctype html>
 <html>
 <head>
   <meta charset="utf-8">

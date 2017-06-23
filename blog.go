@@ -21,6 +21,7 @@ type blogConf struct {
 	FeedPosts  int
 	RootURL    string
 	Template   string
+	CSS        string
 }
 
 // categoryMeta represents the metadata of a cateogory, found in the global
@@ -108,7 +109,7 @@ func readCategoryConf(cat, fname string) *categoryConf {
 }
 
 // readAllAndStat retrieves all content of the named file and its stat.
-func readAllAndStat(fname string) ([]byte, os.FileInfo) {
+func readAllAndStat(fname string) (string, os.FileInfo) {
 	file, err := os.Open(fname)
 	if err != nil {
 		log.Fatalln(err)
@@ -122,5 +123,10 @@ func readAllAndStat(fname string) ([]byte, os.FileInfo) {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	return content, fi
+	return string(content), fi
+}
+
+func readAll(fname string) string {
+	all, _ := readAllAndStat(fname)
+	return all
 }

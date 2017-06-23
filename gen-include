@@ -9,9 +9,9 @@ i() {
 cat > ./include.go <<EOF
 package main
 
-const css = `i reset.css` + `i blog.css`
+const defaultCSS = `i reset.css` + `i blog.css`
 
-const baseTemplText = `i base.html`
+const defaultTemplate = `i base.html`
 
 const feedTemplText = `i feed.atom`
 EOF
