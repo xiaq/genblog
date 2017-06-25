@@ -171,10 +171,13 @@ a {
     content: "\00a0";
 }
 
+code, pre {
+    font-family: Consolas, Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono", monospace;
+}
+
 .article code, .article pre {
     background-color: #f0f0f0;
     border-radius: 3px;
-    font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
 }
 
 .article code {
