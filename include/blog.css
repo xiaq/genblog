@@ -114,6 +114,10 @@ a {
 
 /* Article content. */
 
+.timestamp {
+    margin-bottom: 0.6em;
+}
+
 .article-header {
     padding: 2.4% 4% 1.6%;
 }
