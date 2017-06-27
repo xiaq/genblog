@@ -54,6 +54,11 @@ func main() {
 	// Read blog configuration.
 	conf := &blogConf{}
 	decodeFile(path.Join(srcDir, "index.toml"), conf)
+	genFeed, genSitemap := true, true
+	if conf.RootURL == "" {
+		fmt.Fprintln(os.Stderr, "No rootURL specified, generation of feed and sitemap disabled.")
+		genFeed, genSitemap = false, false
+	}
 	template := defaultTemplate
 	if conf.Template != "" {
 		template = readAll(path.Join(srcDir, conf.Template))
@@ -84,8 +89,14 @@ func main() {
 	// requested.
 	allArticleMetas := []articleMeta{}
 
+	// Paths of all generated URLs, relative to the destination directory,
+	// always without "index.html". Used to generate the sitemap.
+	allPaths := []string{""}
+
 	// Render a category index.
-	renderCategoryIndex := func(name, prelude string, articles []articleMeta) string {
+	renderCategoryIndex := func(name, prelude string, articles []articleMeta) {
+		// Add category index to the sitemap, without "/index.html"
+		allPaths = append(allPaths, name)
 		// Create directory
 		catDir := path.Join(dstDir, name)
 		err := os.MkdirAll(catDir, 0755)
@@ -96,8 +107,6 @@ func main() {
 		// Generate index
 		cd := &categoryDot{base, name, prelude, articles}
 		executeToFile(categoryTmpl, cd, path.Join(catDir, "index.html"))
-
-		return catDir
 	}
 
 	for _, cat := range conf.Categories {
@@ -118,13 +127,15 @@ func main() {
 			prelude = readAll(
 				path.Join(srcDir, cat.Name, catConf.Prelude+".html"))
 		}
-		catDstDir := renderCategoryIndex(cat.Name, prelude, catConf.Articles)
+		renderCategoryIndex(cat.Name, prelude, catConf.Articles)
 
 		// Generate articles
 		for _, am := range catConf.Articles {
+			// Add article URL to sitemap.
+			p := path.Join(cat.Name, am.Name+".html")
+			allPaths = append(allPaths, p)
 			// Read article
-			content, fi := readAllAndStat(
-				path.Join(srcDir, cat.Name, am.Name+".html"))
+			content, fi := readAllAndStat(path.Join(srcDir, p))
 			modTime := fi.ModTime()
 			if modTime.After(lastModified) {
 				lastModified = modTime
@@ -134,7 +145,7 @@ func main() {
 
 			// Generate article page.
 			ad := &articleDot{base, a}
-			executeToFile(articleTmpl, ad, path.Join(catDstDir, am.Name+".html"))
+			executeToFile(articleTmpl, ad, path.Join(dstDir, p))
 
 			allArticleMetas = append(allArticleMetas, a.articleMeta)
 			recents.insert(a)
@@ -156,7 +167,20 @@ func main() {
 	executeToFile(homepageTmpl, ad, path.Join(dstDir, "index.html"))
 
 	// Generate feed
-	feedArticles := recents.articles
-	fd := feedDot{base, feedArticles, rfc3339Time(lastModified)}
-	executeToFile(feedTmpl, fd, path.Join(dstDir, "feed.atom"))
+	if genFeed {
+		feedArticles := recents.articles
+		fd := feedDot{base, feedArticles, rfc3339Time(lastModified)}
+		executeToFile(feedTmpl, fd, path.Join(dstDir, "feed.atom"))
+	}
+
+	if genSitemap {
+		file, err := openForWrite(path.Join(dstDir, "sitemap.txt"))
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer file.Close()
+		for _, p := range allPaths {
+			fmt.Fprintf(file, "%s/%s\n", conf.RootURL, p)
+		}
+	}
 }

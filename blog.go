@@ -17,7 +17,6 @@ type blogConf struct {
 	Author     string
 	Categories []categoryMeta
 	Index      articleMeta
-	IndexPosts int
 	FeedPosts  int
 	RootURL    string
 	Template   string
