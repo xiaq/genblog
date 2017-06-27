@@ -1,5 +1,10 @@
 /* Global styling. */
 
+html {
+  /* Prevent font scaling in landscape while allowing user zoom */
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
     font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft Yahei", FZHei-B01, "WenQuanYi Micro Hei", SimHei;
     font-size: 16px;
@@ -32,22 +37,6 @@ body {
     max-width: 1024px;
 }
 
-/* When the navbar fits within one line, make it fixed.
- * 700px is pretty pessimistic here.
- */
-/*
-@media screen and (min-width: 700px) {
-    #navbar-container {
-        position: fixed;
-        z-index: 100;
-    }
-    .card {
-        position: relative;
-        top: 64px;
-    }
-}
-*/
-
 .nav-link {
     color: black;
     display: inline;
@@ -74,10 +63,10 @@ a {
 }
 
 #blog-title {
-    margin: 16px 2% 0 4%;
     font-size: 2em;
     color: white;
     display: inline-block;
+    margin: 16px 2% 0 4%;
 }
 
 .card-splitter {
@@ -88,12 +77,22 @@ a {
 
 #category-list {
     display: inline-block;
-    margin: 20px 0 0 2%;
+    /* The top margin is used when the category list is not on the same line
+     * as the title. Otherwise it is not important. */
+    margin-top: 16px;
+    /* Used (together with margin-right of #blog-title) to separate category
+     * list and blog title when they are on the same line. Otherwise, used as
+     * spacing from the page edge. This needs to be the same as that of
+     * #blog-title to keep them left-aligned. */
+    margin-left: 2%;
 }
 
 #category-list > li {
     list-style: none;
     display: inline-block;
+    /* This margin is important for the correct spacing when the category list
+     * runs multiple lines. */
+    margin-top: 10px;
 }
 
 #category-list > li > .nav-link {
