@@ -120,7 +120,6 @@ func main() {
 		}
 
 		catConf := readCategoryConf(cat.Name, path.Join(srcDir, cat.Name, "index.toml"))
-		sortArticleMetas(catConf.Articles)
 
 		var prelude string
 		if catConf.Prelude != "" {
