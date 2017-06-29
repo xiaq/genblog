@@ -159,18 +159,6 @@ a {
     padding: 4%;
 }
 
-.toc {
-    margin-left: -0.8em;
-}
-
-.toc li {
-    list-style: none;
-}
-
-.toc a {
-    color: black;
-}
-
 .article p, .article ul, .article pre {
     margin-bottom: 16px;
 }
