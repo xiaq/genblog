@@ -71,7 +71,7 @@ body {
     max-width: 1024px;
 }
 
-.nav-link {
+.nav-link, .nav-link:visited {
     color: black;
     display: inline;
     text-decoration: none;
