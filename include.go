@@ -217,8 +217,8 @@ code, pre {
     font-size: 85%;
 }
 
-/* Only use headers up to h3 */
-.article-header h1, .article-content h1, .article-content h2, .article-content h3 {
+/* Use headers up to h2 should be used in .article-content */
+.article-header h1, .article-content h1, .article-content h2 {
     line-height: 1.25;
 }
 
@@ -226,25 +226,19 @@ code, pre {
     font-size: 2em;
 }
 
-.article-content h1, .article-content h2, .article-content h3 {
+.article-content h1, .article-content h2 {
     margin-top: 24px;
     margin-bottom: 16px;
     font-weight: 600;
 }
 
 .article-content h1 {
-    font-size: 2em;
-    padding-bottom: 0.3em;
-    border-bottom: 1px solid #eee;
-}
-
-.article-content h2 {
     font-size: 1.5em;
     padding-bottom: 0.3em;
     border-bottom: 1px solid #eee;
 }
 
-.article-content h3 {
+.article-content h2 {
     font-size: 1.25em;
 }
 
