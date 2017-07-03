@@ -172,27 +172,30 @@ code, pre {
 }
 
 /* Use headers up to h2 should be used in .article-content */
-.article-header h1, .article-content h1, .article-content h2 {
+.article h1, .article h2 {
     line-height: 1.25;
 }
 
-.article-header h1 {
+.article .article-header h1 {
     font-size: 2em;
+    margin: 0;
+    padding: 0;
+    border: none;
 }
 
-.article-content h1, .article-content h2 {
+.article h1, .article h2 {
     margin-top: 24px;
     margin-bottom: 16px;
     font-weight: 600;
 }
 
-.article-content h1 {
+.article h1 {
     font-size: 1.5em;
     padding-bottom: 0.3em;
     border-bottom: 1px solid #eee;
 }
 
-.article-content h2 {
+.article h2 {
     font-size: 1.25em;
 }
 
