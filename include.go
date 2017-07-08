@@ -327,7 +327,7 @@ const defaultTemplate = `<!doctype html>
       </li>
       {{ range $info := .Categories }}
         <li class="{{ if eq $curcat $info.Name}}current{{ end }}">
-          <a href="{{ rootURL }}/{{ $info.Name }}" class="nav-link">
+          <a href="{{ rootURL }}/{{ $info.Name }}/" class="nav-link">
             {{ $info.Title }}
           </a>
         </li>
