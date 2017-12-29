@@ -216,7 +216,8 @@ code, pre {
 
 .article-list > li {
     list-style: square inside;
-    padding: 4px;
+    padding: 3px;
+    line-height: 1.4;
 }
 
 .article-list > li:hover {
@@ -230,6 +231,7 @@ code, pre {
 .article-timestamp {
     float: right;
     display: inline-block;
+    margin-left: 1em;
 }
 
 /* Utilities usable in articles. */
