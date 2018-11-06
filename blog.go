@@ -4,6 +4,8 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path"
+	"strings"
 
 	"github.com/BurntSushi/toml"
 )
@@ -20,7 +22,7 @@ type blogConf struct {
 	FeedPosts  int
 	RootURL    string
 	Template   string
-	CSS        string
+	BaseCSS    []string
 }
 
 // categoryMeta represents the metadata of a cateogory, found in the global
@@ -34,6 +36,8 @@ type categoryMeta struct {
 // metadata is found in the global blog configuration and not duplicated here.
 type categoryConf struct {
 	Prelude  string
+	ExtraCSS []string
+	ExtraJS  []string
 	Articles []articleMeta
 }
 
@@ -43,6 +47,8 @@ type articleMeta struct {
 	Name      string
 	Title     string
 	Timestamp string
+	ExtraCSS  []string
+	ExtraJS   []string
 }
 
 // article represents an article, including all information that is needed to
@@ -52,6 +58,8 @@ type article struct {
 	IsHomepage   bool
 	Category     string
 	Content      string
+	ExtraCSS     string
+	ExtraJS      string
 	LastModified rfc3339Time
 }
 
@@ -128,4 +136,21 @@ func readAllAndStat(fname string) (string, os.FileInfo) {
 func readAll(fname string) string {
 	all, _ := readAllAndStat(fname)
 	return all
+}
+
+func catAllInDir(dirname string, fnames []string) string {
+	var sb strings.Builder
+	for _, fname := range fnames {
+		sb.WriteString(readAll(path.Join(dirname, fname)))
+	}
+	return sb.String()
+}
+
+func getArticle(a article, am articleMeta, dir string) article {
+	content, fi := readAllAndStat(path.Join(dir, am.Name+".html"))
+	modTime := fi.ModTime()
+	css := catAllInDir(dir, am.ExtraCSS)
+	js := catAllInDir(dir, am.ExtraJS)
+	return article{
+		am, a.IsHomepage, a.Category, content, css, js, rfc3339Time(modTime)}
 }

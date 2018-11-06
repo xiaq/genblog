@@ -63,9 +63,9 @@ func main() {
 	if conf.Template != "" {
 		template = readAll(path.Join(srcDir, conf.Template))
 	}
-	css := defaultCSS
-	if conf.CSS != "" {
-		css = readAll(path.Join(srcDir, conf.CSS))
+	baseCSS := defaultCSS
+	if conf.BaseCSS != nil {
+		baseCSS = catAllInDir(srcDir, conf.BaseCSS)
 	}
 
 	// Initialize templates. They are all initialized from the same source code,
@@ -76,7 +76,7 @@ func main() {
 	feedTmpl := newTemplate("feed", ".", feedTemplText)
 
 	// Base for the {{ . }} object used in all templates.
-	base := newBaseDot(conf, css)
+	base := newBaseDot(conf, baseCSS)
 
 	// Up to conf.FeedPosts recent posts, used in the feed.
 	recents := recentArticles{nil, conf.FeedPosts}
@@ -94,7 +94,7 @@ func main() {
 	allPaths := []string{""}
 
 	// Render a category index.
-	renderCategoryIndex := func(name, prelude string, articles []articleMeta) {
+	renderCategoryIndex := func(name, prelude, css, js string, articles []articleMeta) {
 		// Add category index to the sitemap, without "/index.html"
 		allPaths = append(allPaths, name)
 		// Create directory
@@ -105,7 +105,7 @@ func main() {
 		}
 
 		// Generate index
-		cd := &categoryDot{base, name, prelude, articles}
+		cd := &categoryDot{base, name, prelude, articles, css, js}
 		executeToFile(categoryTmpl, cd, path.Join(catDir, "index.html"))
 	}
 
@@ -121,26 +121,26 @@ func main() {
 
 		catConf := readCategoryConf(cat.Name, path.Join(srcDir, cat.Name, "index.toml"))
 
-		var prelude string
+		prelude := ""
 		if catConf.Prelude != "" {
 			prelude = readAll(
 				path.Join(srcDir, cat.Name, catConf.Prelude+".html"))
 		}
-		renderCategoryIndex(cat.Name, prelude, catConf.Articles)
+		css := catAllInDir(path.Join(srcDir, cat.Name), catConf.ExtraCSS)
+		js := catAllInDir(path.Join(srcDir, cat.Name), catConf.ExtraJS)
+		renderCategoryIndex(cat.Name, prelude, css, js, catConf.Articles)
 
 		// Generate articles
 		for _, am := range catConf.Articles {
 			// Add article URL to sitemap.
 			p := path.Join(cat.Name, am.Name+".html")
 			allPaths = append(allPaths, p)
-			// Read article
-			content, fi := readAllAndStat(path.Join(srcDir, p))
-			modTime := fi.ModTime()
+
+			a := getArticle(article{Category: cat.Name}, am, path.Join(srcDir, cat.Name))
+			modTime := time.Time(a.LastModified)
 			if modTime.After(lastModified) {
 				lastModified = modTime
 			}
-
-			a := article{am, false, cat.Name, content, rfc3339Time(modTime)}
 
 			// Generate article page.
 			ad := &articleDot{base, a}
@@ -154,14 +154,12 @@ func main() {
 	// Generate "all category"
 	if hasAllCategory {
 		sortArticleMetas(allArticleMetas)
-		renderCategoryIndex("all", "", allArticleMetas)
+		renderCategoryIndex("all", "", "", "", allArticleMetas)
 	}
 
 	// Generate index page. XXX(xiaq): duplicated code with generating ordinary
 	// article pages.
-	content, fi := readAllAndStat(path.Join(srcDir, conf.Index.Name+".html"))
-	modTime := fi.ModTime()
-	a := article{conf.Index, true, "homepage", content, rfc3339Time(modTime)}
+	a := getArticle(article{IsHomepage: true, Category: "homepage"}, conf.Index, srcDir)
 	ad := &articleDot{base, a}
 	executeToFile(homepageTmpl, ad, path.Join(dstDir, "index.html"))
 

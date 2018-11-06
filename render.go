@@ -20,7 +20,7 @@ type baseDot struct {
 	Categories    []categoryMeta
 
 	CategoryMap map[string]string
-	CSS         string
+	BaseCSS     string
 }
 
 func newBaseDot(bc *blogConf, css string) *baseDot {
@@ -42,11 +42,8 @@ type categoryDot struct {
 	Category string
 	Prelude  string
 	Articles []articleMeta
-}
-
-type homepageDot struct {
-	*baseDot
-	Articles []articleDot
+	ExtraCSS string
+	ExtraJS  string
 }
 
 type feedDot struct {
